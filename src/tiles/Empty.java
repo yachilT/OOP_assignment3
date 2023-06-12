@@ -3,7 +3,7 @@ package tiles;
 public class Empty extends Tile {
     final private static char EMPTY_CHAR = '.';
     public Empty(Position position) {
-        super(position, EMPTY_CHAR);
+        super(EMPTY_CHAR);
     }
 
     @Override
