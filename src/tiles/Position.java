@@ -8,7 +8,7 @@ public class Position implements Comparable<Position>{
         this.y = y;
     }
 
-    public double range(Position p){
+    public double range(Position p) {
         return Math.sqrt(Math.pow(this.x - p.x,2) + Math.pow(this.y - p.y,2));
     }
 
