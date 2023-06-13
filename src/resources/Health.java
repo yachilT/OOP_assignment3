@@ -16,6 +16,14 @@ public class Health {
         this.healthAmount = healthAmount;
     }
 
+    public void decreaseHealth(int damage) {
+        this.healthAmount = Math.max(this.healthAmount - damage, 0);
+    }
+
+    public void heal(int amount) {
+        this.healthAmount = Math.min(this.healthAmount + amount, healthPool);
+    }
+
     public int getHealthPool() {
         return healthPool;
     }
