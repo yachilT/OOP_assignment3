@@ -25,11 +25,11 @@ public class Mage extends Player{
         mana.setCurrentMana(Math.min(mana.getManaPool(),mana.getCurrentMana() + level));
     }
     public void onAbilityCast(){
+
+    }
+    public  void castSpecialAbility(){
         mana.setCurrentMana(Math.max(mana.getCurrentMana() - manaCost,0));
         int hits = 0;
         //implementation
-    }
-    public  void castSpecialAbility(){
-
     }
 }

@@ -8,7 +8,15 @@ public class Mana {
         this.manaPool = manaPool;
         this.currentMana = currentMana;
     }
-
+    public void increaseCurrentMana(int toIncrease){
+        this.currentMana = Math.min(currentMana + toIncrease, manaPool);
+    }
+    public void decreaseCurrentMana(int toDecrease){
+        this.currentMana = Math.max(currentMana - toDecrease, 0);
+    }
+    public void increaseHealthPool(int toIncrease){
+        this.manaPool += toIncrease;
+    }
     public int getManaPool() {
         return manaPool;
     }
