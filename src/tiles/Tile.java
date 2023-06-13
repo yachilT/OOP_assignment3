@@ -9,7 +9,10 @@ public abstract class Tile implements Comparable<Tile>{
     public char getTile(){return character;}
     public Position getPosition(){return position;}
     public void setPosition(Position position){this.position = position;}
-    public abstract void accept(Unit unit);
+    public void accept(Unit unit){
+        unit.moveTo(this);
+    }
+
     public int compareTo(Tile tile){return getPosition().compareTo(tile.getPosition());}
     @Override
     public String toString() {

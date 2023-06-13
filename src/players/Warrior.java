@@ -1,7 +1,5 @@
 package players;
 
-import jdk.jshell.spi.ExecutionControl;
-
 public class Warrior extends Player{
     private int abilityCooldown;
     private int remainingCooldown;
@@ -21,7 +19,7 @@ public class Warrior extends Player{
     }
     public void onAbilityCast(){
         remainingCooldown = abilityCooldown;
-        health.setHealthAmount(Math.min(health.getHealthAmount() + 10 * defensePts, health.getHealthPool()));
+        health.heal(10 * defensePts);
         // Randomly hits one enemy within range < 3 ...
     }
 

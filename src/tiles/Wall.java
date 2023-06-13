@@ -7,8 +7,4 @@ public class Wall extends Tile{
         super(WALL_CHAR);
     }
 
-    @Override
-    public void accept(Unit unit) {
-        unit.MoveTo(this);
-    }
 }

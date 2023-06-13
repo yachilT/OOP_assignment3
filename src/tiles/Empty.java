@@ -6,8 +6,4 @@ public class Empty extends Tile {
         super(EMPTY_CHAR);
     }
 
-    @Override
-    public void accept(Unit unit) {
-          unit.MoveTo(this);
-    }
 }

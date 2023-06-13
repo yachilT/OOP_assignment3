@@ -12,8 +12,8 @@ public class Health {
     }
 
 
-    public void setHealthAmount(int healthAmount) {
-        this.healthAmount = healthAmount;
+    public void regenerate() {
+        this.healthAmount = healthPool;
     }
 
     public void decreaseHealth(int damage) {

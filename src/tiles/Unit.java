@@ -1,16 +1,18 @@
 package tiles;
 
-import jdk.jshell.spi.ExecutionControl;
+import enemies.Enemy;
 import messeages.MessageCallback;
+import players.Player;
 import resources.Health;
 
-import java.util.NoSuchElementException;
+import java.util.Random;
 
 public abstract class Unit extends Tile {
     protected String name;
     protected int attackPts;
     protected int defensePts;
     protected Health health;
+    protected Random random;
 
     public Unit(char character, String name,int health, int attackPts, int defensePts) {
         super(character);
@@ -18,36 +20,52 @@ public abstract class Unit extends Tile {
         this.attackPts = attackPts;
         this.defensePts = defensePts;
         this.health = new Health(health,health);
+        this.random = new Random();
     }
     public void initialize(Position position, MessageCallback messageCallback){
         super.initialize(position);
-
     }
-    public int attack(){
-        return -1;
+
+    private int attack() {
+        return random.nextInt(0, attackPts);
     }
     public int defend(){
-        return -1;
+        return random.nextInt(0, defensePts);
     }
 
-    public void MoveTo(Tile tile) {
+    public void combat(Unit defender){
+        int damage = this.attack() - defender.defend();
+        if(damage > 0)
+            defender.health.decreaseHealth(damage);
+    }
+
+    public boolean isDead(){
+        return health.getHealthAmount() == 0;
+    }
+    public void moveTo(Tile tile) {
         tile.accept(this);
     } //He called it interact
 
-    public void MoveTo(Empty empty){
+    public void moveTo(Empty empty){
         Position temp = this.position;
         this.position = empty.position;
         empty.position = temp;
     }
 
-    public void MoveTo(Wall wall){
+    public void moveTo(Wall wall){
         // Do nothing
     }
+
+    public abstract void moveTo(Enemy enemy);
+
+    public abstract void moveTo(Player player);
+
+
     public String getName() {
         return name;
     }
     public String describe(){
-        return String.format("%s\t\tHealth: %s\t\tAttack: %d\t\tDefense: %d",getName(),health.toString(),attackPts,defensePts);
+        return String.format("%s\t\tHealth: %s\t\tAttack: %d\t\tDefense: %d", name, health.toString(), attackPts, defensePts);
     }
 
 }

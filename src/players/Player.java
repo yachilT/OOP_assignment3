@@ -15,8 +15,8 @@ public abstract class Player extends Unit {
     public void LevelUp(){
         experiencePts = Math.max((experiencePts - 50 * level), 0);
         level++;
-        health.setHealthAmount(health.getHealthPool());
         health.setHealthPool(health.getHealthPool() + 10 * level);
+        health.regenerate();
         attackPts = attackPts + 4 * level;
         defensePts = defensePts + level;
         uponLevelingUp();
