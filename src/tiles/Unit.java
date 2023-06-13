@@ -44,7 +44,7 @@ public abstract class Unit extends Tile {
     }
     public void moveTo(Tile tile) {
         tile.accept(this);
-    } //He called it interact
+    }
 
     public void moveTo(Empty empty){
         Position temp = this.position;
@@ -68,4 +68,7 @@ public abstract class Unit extends Tile {
         return String.format("%s\t\tHealth: %s\t\tAttack: %d\t\tDefense: %d", name, health.toString(), attackPts, defensePts);
     }
 
+    public void acceptKiller(Player player) {
+        player.uponOpponentDeath(player);
+    }
 }

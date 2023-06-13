@@ -2,6 +2,7 @@ package players;
 
 import tiles.Tile;
 import tiles.Unit;
+import enemies.*;
 
 public abstract class Player extends Unit {
     final static private char CHARACTER = '@';
@@ -25,13 +26,29 @@ public abstract class Player extends Unit {
     public abstract void uponLevelingUp();
     public abstract void onGameTick();
     public abstract void onAbilityCast();
-    @Override
-    public void accept(Unit unit) {
-
+    public void moveTo(Enemy enemy){
+        this.combat(enemy);
+    }
+    public void moveTo(Player player){
+        // Impossible scenario.
     }
 
     @Override
-    public int compareTo(Tile o) {
-        return 0;
+     public void combat(Unit defender) {
+        super.combat(defender);
+        if (defender.isDead())
+            uponOpponentDeath(defender);
+    }
+
+    public void uponOpponentDeath(Unit opponent) {
+        opponent.acceptKiller(this);
+    }
+    public void uponOpponentDeath(Player player){
+        //impossible scenario
+    }
+
+    public void uponOpponentDeath(Enemy enemy){
+        experiencePts += enemy.getXpValue();
+
     }
 }
