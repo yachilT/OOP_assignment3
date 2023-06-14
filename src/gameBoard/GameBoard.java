@@ -1,5 +1,6 @@
+package gameBoard;
+
 import enemies.Enemy;
-import jdk.jshell.spi.ExecutionControl;
 import tiles.Empty;
 import tiles.Position;
 import tiles.Tile;
@@ -16,9 +17,9 @@ public class GameBoard {
         for(Tile[] line: board)
             tiles.addAll(Arrays.asList(line));
     }
-    public Tile get(int x,int y){
+    public Tile get(Position pos){
         for(Tile t : tiles){
-            if(t.getPosition().equals(new Position(x,y)))
+            if(t.getPosition().equals(pos))
                 return t;
         }
         throw new IndexOutOfBoundsException("The position is out of bounds");

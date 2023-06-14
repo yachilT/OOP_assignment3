@@ -5,6 +5,7 @@ import tiles.Unit;
 
 public abstract class Enemy extends Unit {
     protected int xpValue;
+    protected Player player;
     public Enemy(char character, String name, int health, int attackPts, int defencePts, int xpValue){
         super(character,name,health,attackPts,defencePts);
         this.xpValue = xpValue;

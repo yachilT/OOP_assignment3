@@ -17,8 +17,9 @@ public class Mage extends Player{
         this.abilityRange = abilityRange;
     }
     public void uponLevelingUp(){
-        mana.setManaPool(mana.getManaPool() + 25 * level);
-        mana.setCurrentMana(Math.min(mana.getCurrentMana() + mana.getManaPool() / 4, mana.getManaPool()));
+        super.uponLevelingUp();
+        mana.increaseManaPool(25 * level);
+        mana.increaseCurrentMana(mana.getCurrentMana() + mana.getManaPool() / 4);
         spellPower = spellPower + 10 * level;
     }
     public void onGameTick(){

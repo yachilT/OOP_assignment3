@@ -1,5 +1,6 @@
 package messeages;
 
 public interface MessageCallback {
-    public void sed(Message m);
+    public void send(Message m);
+
 }

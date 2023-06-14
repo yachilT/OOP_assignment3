@@ -7,4 +7,8 @@ public class Wall extends Tile{
         super(WALL_CHAR);
     }
 
+    @Override
+    public void acceptMove(Unit unit){
+        unit.moveTo(this);
+    }
 }

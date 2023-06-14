@@ -11,7 +11,9 @@ public class Health {
         this.healthPool = healthPool;
     }
 
-
+    public void increaseHealthPool(int toIncrease){
+        this.healthPool += toIncrease;
+    }
     public void regenerate() {
         this.healthAmount = healthPool;
     }

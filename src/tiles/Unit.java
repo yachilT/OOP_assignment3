@@ -1,7 +1,10 @@
 package tiles;
 
 import enemies.Enemy;
+import gameBoard.*;
 import messeages.MessageCallback;
+import movment.DownStep;
+import movment.Step;
 import players.Player;
 import resources.Health;
 
@@ -13,6 +16,8 @@ public abstract class Unit extends Tile {
     protected int defensePts;
     protected Health health;
     protected Random random;
+    protected MessageCallback messageCallback;
+    protected GameBoard gameBoard;
 
     public Unit(char character, String name,int health, int attackPts, int defensePts) {
         super(character);
@@ -21,11 +26,18 @@ public abstract class Unit extends Tile {
         this.defensePts = defensePts;
         this.health = new Health(health,health);
         this.random = new Random();
+
     }
-    public void initialize(Position position, MessageCallback messageCallback){
+    public void initialize(Position position, MessageCallback messageCallback, GameBoard gameBoard){
         super.initialize(position);
+        this.messageCallback = messageCallback;
+        this.gameBoard = gameBoard;
     }
 
+    public void onGameTick() {
+        Step step = new DownStep(); // dummy step
+        this.moveTo(gameBoard.get(getNextPos(step)));
+    }
     private int attack() {
         return random.nextInt(0, attackPts);
     }
@@ -43,7 +55,7 @@ public abstract class Unit extends Tile {
         return health.getHealthAmount() == 0;
     }
     public void moveTo(Tile tile) {
-        tile.accept(this);
+        tile.acceptMove(this);
     }
 
     public void moveTo(Empty empty){
@@ -67,8 +79,11 @@ public abstract class Unit extends Tile {
     public String describe(){
         return String.format("%s\t\tHealth: %s\t\tAttack: %d\t\tDefense: %d", name, health.toString(), attackPts, defensePts);
     }
-
     public void acceptKiller(Player player) {
         player.uponOpponentDeath(player);
+    }
+
+    public Position getNextPos(Step step){
+        return step.calcNextPos(this.position);
     }
 }

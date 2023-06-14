@@ -6,4 +6,9 @@ public class Empty extends Tile {
         super(EMPTY_CHAR);
     }
 
+    @Override
+    public void acceptMove(Unit unit){
+        unit.moveTo(this);
+    }
+
 }

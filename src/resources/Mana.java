@@ -14,7 +14,7 @@ public class Mana {
     public void decreaseCurrentMana(int toDecrease){
         this.currentMana = Math.max(currentMana - toDecrease, 0);
     }
-    public void increaseHealthPool(int toIncrease){
+    public void increaseManaPool(int toIncrease){
         this.manaPool += toIncrease;
     }
     public int getManaPool() {

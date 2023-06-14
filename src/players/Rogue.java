@@ -16,6 +16,7 @@ public class Rogue extends Player{
 
     @Override
     public void uponLevelingUp(){
+        super.uponLevelingUp();
         currentEnergy = 100;
         attackPts = attackPts + 3 * level;
     }

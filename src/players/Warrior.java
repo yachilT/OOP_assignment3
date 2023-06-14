@@ -9,8 +9,9 @@ public class Warrior extends Player{
         this.remainingCooldown = 0;
     }
     public void uponLevelingUp(){
+        super.uponLevelingUp();
         remainingCooldown = 0;
-        health.setHealthPool(health.getHealthPool() + 5 * level);
+        health.increaseHealthPool( 5 * level);
         attackPts += 2 * level;
         defensePts += level;
     }
