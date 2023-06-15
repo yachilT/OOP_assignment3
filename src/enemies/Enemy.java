@@ -20,4 +20,9 @@ public abstract class Enemy extends Unit {
     public void moveTo(Player player){
         this.combat(player);
     }
+
+    @Override
+    public void acceptKiller(Player player) {
+        player.uponOpponentDeath(this);
+    }
 }

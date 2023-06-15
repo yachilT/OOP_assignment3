@@ -1,8 +1,9 @@
 package players;
+import messeages.DeathListener;
 import tiles.Unit;
 import enemies.*;
 
-public abstract class Player extends Unit {
+public abstract class Player extends Unit implements DeathListener {
     final static private char CHARACTER = '@';
     protected int experiencePts;
     protected int level;
@@ -22,6 +23,10 @@ public abstract class Player extends Unit {
     }
     public abstract void castSpecialAbility();
     public abstract void onAbilityCast();
+
+    public void acceptMove(Unit unit) {
+        unit.moveTo(this);
+    }
     public void moveTo(Enemy enemy){
         this.combat(enemy);
     }
@@ -32,13 +37,13 @@ public abstract class Player extends Unit {
     @Override
      public void combat(Unit defender) {
         super.combat(defender);
-        if (defender.isDead())
-            uponOpponentDeath(defender);
     }
 
-    public void uponOpponentDeath(Unit opponent) {
-        opponent.acceptKiller(this);
+    @Override
+    public void receiveDeath(Unit unit) {
+        unit.acceptKiller(this);
     }
+
     public void uponOpponentDeath(Player player){
         //impossible scenario
     }

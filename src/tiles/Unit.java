@@ -2,12 +2,15 @@ package tiles;
 
 import enemies.Enemy;
 import gameBoard.*;
+import messeages.DeathListener;
 import messeages.MessageCallback;
 import movment.DownStep;
 import movment.Step;
 import players.Player;
 import resources.Health;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public abstract class Unit extends Tile {
@@ -19,6 +22,8 @@ public abstract class Unit extends Tile {
     protected MessageCallback messageCallback;
     protected GameBoard gameBoard;
 
+    protected final List<DeathListener> deathListeners;
+
     public Unit(char character, String name,int health, int attackPts, int defensePts) {
         super(character);
         this.name = name;
@@ -26,6 +31,7 @@ public abstract class Unit extends Tile {
         this.defensePts = defensePts;
         this.health = new Health(health,health);
         this.random = new Random();
+        this.deathListeners = new ArrayList<>();
 
     }
     public void initialize(Position position, MessageCallback messageCallback, GameBoard gameBoard){
@@ -51,9 +57,10 @@ public abstract class Unit extends Tile {
             defender.health.decreaseHealth(damage);
     }
 
-    public boolean isDead(){
-        return health.getHealthAmount() == 0;
+    public void notifyDeathListeners(){
+        deathListeners.forEach(l -> l.receiveDeath(this));
     }
+
     public void moveTo(Tile tile) {
         tile.acceptMove(this);
     }
@@ -79,9 +86,11 @@ public abstract class Unit extends Tile {
     public String describe(){
         return String.format("%s\t\tHealth: %s\t\tAttack: %d\t\tDefense: %d", name, health.toString(), attackPts, defensePts);
     }
-    public void acceptKiller(Player player) {
-        player.uponOpponentDeath(player);
-    }
+    public abstract void  acceptKiller(Player player);
+
+
+
+
 
     public Position getNextPos(Step step){
         return step.calcNextPos(this.position);
