@@ -6,6 +6,9 @@ import movment.Step;
 import tiles.Unit;
 import enemies.*;
 
+import java.util.HashMap;
+import java.util.Objects;
+
 public abstract class Player extends Unit implements DeathListener {
     final static private char CHARACTER = '@';
     protected int experiencePts;
@@ -13,7 +16,7 @@ public abstract class Player extends Unit implements DeathListener {
 
     private InputReader reader;
 
-    public Player(String name, int health, int attack, int defense){
+    public Player(String name, int health, int attack, int defense, InputReader reader){
         super(CHARACTER,name,health,attack,defense);
         experiencePts = 0;
         level = 1;
@@ -69,4 +72,16 @@ public abstract class Player extends Unit implements DeathListener {
         messageCallback.send(enemy.getName() + " gained " + enemy.getXpValue() + "experience");
         experiencePts += enemy.getXpValue();
     }
+    public Step determineStep(){
+        String s = reader.read();
+        if (Step.stepsDict.containsKey(s))
+            return Step.stepsDict.get(s);
+
+    }
+
+    @Override
+    public void acceptKiller(Player player) {
+       //Impossible scenario
+    }
+
 }

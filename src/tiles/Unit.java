@@ -40,6 +40,12 @@ public abstract class Unit extends Tile {
         this.gameBoard = gameBoard;
         this.registerDeathListener(gameBoard);
     }
+    public abstract Step determineStep();
+    public abstract void acceptBoard(GameBoard board);
+    public abstract void moveTo(Enemy enemy);
+    public abstract void moveTo(Player player);
+    public abstract void  acceptKiller(Player player);
+
 
     public void onGameTick() {
 
@@ -93,11 +99,6 @@ public abstract class Unit extends Tile {
     public void moveTo(Wall wall){
         // Do nothing
     }
-
-    public abstract void moveTo(Enemy enemy);
-
-    public abstract void moveTo(Player player);
-
 
     public String getName() {
         return name;

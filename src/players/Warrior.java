@@ -18,12 +18,11 @@ public class Warrior extends Player{
     public void onGameTick(){
         remainingCooldown = Math.max(0,remainingCooldown - 1);
     }
-    public void onAbilityCast(){
+    public void onAbilityCast() {
         remainingCooldown = abilityCooldown;
         health.heal(10 * defensePts);
         // Randomly hits one enemy within range < 3 ...
     }
-
     @Override
     public void castSpecialAbility() {
 
