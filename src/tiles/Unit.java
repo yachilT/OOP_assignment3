@@ -1,10 +1,10 @@
 package tiles;
 
+import IO.Message;
 import enemies.Enemy;
 import gameBoard.*;
-import messeages.DeathListener;
-import messeages.MessageCallback;
-import movment.DownStep;
+import IO.DeathListener;
+import IO.MessageCallback;
 import movment.Step;
 import players.Player;
 import resources.Health;
@@ -38,27 +38,46 @@ public abstract class Unit extends Tile {
         super.initialize(position);
         this.messageCallback = messageCallback;
         this.gameBoard = gameBoard;
+        this.registerDeathListener(gameBoard);
     }
 
     public void onGameTick() {
-        Step step = new DownStep(); // dummy step
-        this.moveTo(gameBoard.get(getNextPos(step)));
+
+        Position nextPos = determineStep().calcNextPos(position);
+        if (!nextPos.equals(this.position))
+            this.moveTo(gameBoard.get(nextPos));
+
+        if (health.getHealthAmount() == 0) {
+            messageCallback.send(this.name + " has died");
+            notifyDeathListeners();
+        }
     }
     private int attack() {
-        return random.nextInt(0, attackPts);
+        int pts = random.nextInt(0, attackPts);
+        this.messageCallback.send(this.name + " rolled " + pts + "attack pts.");
+        return pts;
     }
-    public int defend(){
-        return random.nextInt(0, defensePts);
+    public int defend() {
+        int pts = random.nextInt(0, defensePts);
+        this.messageCallback.send(this.name + " rolled " + pts + "defend pts");
+        return pts;
+
     }
 
     public void combat(Unit defender){
         int damage = this.attack() - defender.defend();
-        if(damage > 0)
+        if(damage > 0) {
+            messageCallback.send(this.name + " dealt " + damage + " damage pts to " + defender.getName());
             defender.health.decreaseHealth(damage);
+        }
     }
 
     public void notifyDeathListeners(){
         deathListeners.forEach(l -> l.receiveDeath(this));
+    }
+
+    public void registerDeathListener(DeathListener deathListener){
+        deathListeners.add(deathListener);
     }
 
     public void moveTo(Tile tile) {
@@ -86,13 +105,5 @@ public abstract class Unit extends Tile {
     public String describe(){
         return String.format("%s\t\tHealth: %s\t\tAttack: %d\t\tDefense: %d", name, health.toString(), attackPts, defensePts);
     }
-    public abstract void  acceptKiller(Player player);
 
-
-
-
-
-    public Position getNextPos(Step step){
-        return step.calcNextPos(this.position);
-    }
 }

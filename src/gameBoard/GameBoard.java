@@ -1,16 +1,19 @@
 package gameBoard;
 
 import enemies.Enemy;
+import IO.DeathListener;
+import players.Player;
 import tiles.Empty;
 import tiles.Position;
 import tiles.Tile;
+import tiles.Unit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GameBoard {
+public class GameBoard implements DeathListener {
     private List<Tile> tiles;
     public GameBoard(Tile[][] board){
         tiles = new ArrayList<>();
@@ -41,5 +44,16 @@ public class GameBoard {
             }
         }
         return output;
+    }
+
+    @Override
+    public void receiveDeath(Unit unit) {
+
+    }
+    public void receiveDeath(Enemy e){
+        remove(e);
+    }
+    public void receiveDeath(Player p){
+
     }
 }

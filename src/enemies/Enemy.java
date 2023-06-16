@@ -1,6 +1,9 @@
 package enemies;
 
+import gameBoard.GameBoard;
+import IO.MessageCallback;
 import players.Player;
+import tiles.Position;
 import tiles.Unit;
 
 public abstract class Enemy extends Unit {
@@ -10,6 +13,14 @@ public abstract class Enemy extends Unit {
         super(character,name,health,attackPts,defencePts);
         this.xpValue = xpValue;
     }
+
+    public void initialize(Position position, MessageCallback messageCallback, GameBoard gameBoard, Player player) {
+        super.initialize(position, messageCallback, gameBoard);
+        this.registerDeathListener(player);
+        this.player = player;
+    }
+
+
 
     public int getXpValue(){
         return xpValue;
@@ -24,5 +35,10 @@ public abstract class Enemy extends Unit {
     @Override
     public void acceptKiller(Player player) {
         player.uponOpponentDeath(this);
+    }
+
+    @Override
+    public void acceptBoard(GameBoard board){
+        board.receiveDeath(this);
     }
 }

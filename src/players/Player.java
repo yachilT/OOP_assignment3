@@ -1,5 +1,8 @@
 package players;
-import messeages.DeathListener;
+import IO.InputReader;
+import gameBoard.GameBoard;
+import IO.DeathListener;
+import movment.Step;
 import tiles.Unit;
 import enemies.*;
 
@@ -8,18 +11,35 @@ public abstract class Player extends Unit implements DeathListener {
     protected int experiencePts;
     protected int level;
 
+    private InputReader reader;
+
     public Player(String name, int health, int attack, int defense){
         super(CHARACTER,name,health,attack,defense);
         experiencePts = 0;
         level = 1;
+        this.reader = reader;
+
     }
+
+    @Override
+    public void onGameTick() {
+        super.onGameTick();
+        if (experiencePts >= 50 * level)
+            uponLevelingUp();
+    }
+
     public void uponLevelingUp(){
-        experiencePts = Math.max((experiencePts - 50 * level), 0);
-        level++;
-        health.increaseHealthPool( 10 * level);
+        int xpPts = Math.max((experiencePts - 50 * level), 0);
+        this.level++;
+        int healthPool =  10 * level;
+        int attackToIncrease = 4 * level;
+        int defenseToIncrease = level;
+        messageCallback.send(String.format("%s reached level %d: +%d Health, +%d Attack, +%d Defense", name, level, healthPool, attackToIncrease, defenseToIncrease));
+        experiencePts = xpPts;
+        health.increaseHealthPool(healthPool);
         health.regenerate();
-        attackPts = attackPts + 4 * level;
-        defensePts = defensePts + level;
+        attackPts += attackToIncrease;
+        defensePts += defenseToIncrease;
     }
     public abstract void castSpecialAbility();
     public abstract void onAbilityCast();
@@ -27,28 +47,26 @@ public abstract class Player extends Unit implements DeathListener {
     public void acceptMove(Unit unit) {
         unit.moveTo(this);
     }
-    public void moveTo(Enemy enemy){
+    public void moveTo(Enemy enemy) {
         this.combat(enemy);
     }
-    public void moveTo(Player player){
+    public void moveTo(Player player) {
         // Impossible scenario.
     }
 
-    @Override
-     public void combat(Unit defender) {
-        super.combat(defender);
-    }
 
+    @Override
+    public void acceptBoard(GameBoard board){
+        board.receiveDeath(this);
+    }
     @Override
     public void receiveDeath(Unit unit) {
         unit.acceptKiller(this);
     }
 
-    public void uponOpponentDeath(Player player){
-        //impossible scenario
-    }
 
     public void uponOpponentDeath(Enemy enemy){
+        messageCallback.send(enemy.getName() + " gained " + enemy.getXpValue() + "experience");
         experiencePts += enemy.getXpValue();
     }
 }
