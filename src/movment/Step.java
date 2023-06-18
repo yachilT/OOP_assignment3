@@ -1,13 +1,8 @@
 package movment;
 
-import tiles.Position;
-
 import java.util.Map;
 
-public interface Step {
-    public Position calcNextPos(Position pos);
-
-
+public interface Step extends Action {
     public static Map<String, Step> stepsDict = Map.of(
             "w", new UpStep(),
             "s" , new DownStep(),

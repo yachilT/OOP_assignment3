@@ -1,7 +1,5 @@
 package movment;
 
-import tiles.Position;
-
 public class UpStep implements Step{
 
     @Override

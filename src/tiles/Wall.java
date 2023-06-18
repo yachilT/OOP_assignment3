@@ -1,5 +1,7 @@
 package tiles;
 
+import movment.Position;
+
 public class Wall extends Tile{
     final static private char WALL_CHAR = '#';
 

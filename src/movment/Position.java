@@ -1,4 +1,4 @@
-package tiles;
+package movment;
 
 public class Position implements Comparable<Position>{
     public int x;
@@ -18,5 +18,9 @@ public class Position implements Comparable<Position>{
             return this.y - p.y;
         else
             return this.x - p.x;
+    }
+
+    public Position add(int x, int y) {
+        return new Position(this.x + x, this.y + y);
     }
 }

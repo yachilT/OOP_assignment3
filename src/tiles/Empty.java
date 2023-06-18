@@ -1,5 +1,7 @@
 package tiles;
 
+import movment.Position;
+
 public class Empty extends Tile {
     final public static char EMPTY_CHAR = '.';
     public Empty(Position position) {

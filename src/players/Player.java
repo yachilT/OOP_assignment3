@@ -72,10 +72,11 @@ public abstract class Player extends Unit implements DeathListener {
         messageCallback.send(enemy.getName() + " gained " + enemy.getXpValue() + "experience");
         experiencePts += enemy.getXpValue();
     }
-    public Step determineStep(){
+    public Step determineAction() {
         String s = reader.read();
         if (Step.stepsDict.containsKey(s))
             return Step.stepsDict.get(s);
+        else
 
     }
 

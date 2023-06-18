@@ -4,7 +4,7 @@ import enemies.Enemy;
 import IO.DeathListener;
 import players.Player;
 import tiles.Empty;
-import tiles.Position;
+import movment.Position;
 import tiles.Tile;
 import tiles.Unit;
 

@@ -1,10 +1,10 @@
 package tiles;
 
-import IO.Message;
 import enemies.Enemy;
 import gameBoard.*;
 import IO.DeathListener;
 import IO.MessageCallback;
+import movment.Position;
 import movment.Step;
 import players.Player;
 import resources.Health;
@@ -40,7 +40,7 @@ public abstract class Unit extends Tile {
         this.gameBoard = gameBoard;
         this.registerDeathListener(gameBoard);
     }
-    public abstract Step determineStep();
+    public abstract Step determineAction();
     public abstract void acceptBoard(GameBoard board);
     public abstract void moveTo(Enemy enemy);
     public abstract void moveTo(Player player);
@@ -49,7 +49,7 @@ public abstract class Unit extends Tile {
 
     public void onGameTick() {
 
-        Position nextPos = determineStep().calcNextPos(position);
+        Position nextPos = determineAction().calcNextPos(position);
         if (!nextPos.equals(this.position))
             this.moveTo(gameBoard.get(nextPos));
 
@@ -107,4 +107,7 @@ public abstract class Unit extends Tile {
         return String.format("%s\t\tHealth: %s\t\tAttack: %d\t\tDefense: %d", name, health.toString(), attackPts, defensePts);
     }
 
+    public GameBoard getGameBoard() {
+        return gameBoard;
+    }
 }

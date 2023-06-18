@@ -3,7 +3,7 @@ package enemies;
 import gameBoard.GameBoard;
 import IO.MessageCallback;
 import players.Player;
-import tiles.Position;
+import movment.Position;
 import tiles.Unit;
 
 public abstract class Enemy extends Unit {

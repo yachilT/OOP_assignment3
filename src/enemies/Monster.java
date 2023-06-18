@@ -25,7 +25,7 @@ public class Monster extends Enemy {
         super.onGameTick();
     }
 
-    public Step determineStep() {
+    public Step determineAction() {
         if (this.position.range(player.getPosition()) < VISION_RANGE) {
             int dx = this.position.x - player.getPosition().x;
             int dy = this.position.y - player.getPosition().y;

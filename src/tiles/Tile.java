@@ -1,5 +1,7 @@
 package tiles;
 
+import movment.Position;
+
 public abstract class Tile implements Comparable<Tile>{
     protected char character;
     protected Position position;

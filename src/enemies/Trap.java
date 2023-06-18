@@ -3,7 +3,6 @@ package enemies;
 import movment.Stay;
 import movment.Step;
 import tiles.Empty;
-import tiles.Position;
 import tiles.Unit;
 
 public class Trap extends Enemy{
@@ -27,7 +26,7 @@ public class Trap extends Enemy{
     }
 
     @Override
-    public Step determineStep() {
+    public Step determineAction() {
         return new Stay();
     }
 
