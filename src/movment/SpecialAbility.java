@@ -2,10 +2,9 @@ package movment;
 
 import tiles.Unit;
 
-public class Stay implements Step {
-
+public class SpecialAbility implements Action{
     @Override
     public void act(Unit unit) {
-        //Do nothing
+
     }
 }
