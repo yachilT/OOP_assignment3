@@ -45,4 +45,9 @@ public abstract class Enemy extends Unit {
     public void acceptSpecialAbility(SpecialAbility ability){
         ability.act(this);
     }
+
+    @Override
+    public void receiveDeath(Unit unit) {
+        // does nothing...
+    }
 }
