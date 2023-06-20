@@ -27,6 +27,6 @@ public class Rogue extends Player{
 
     @Override
     public void onAbilityCast() {
-        if()
+
     }
 }
