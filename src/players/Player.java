@@ -17,15 +17,16 @@ public abstract class Player extends Unit implements DeathListener {
     final static private char DEATH_CHARACTER = 'X';
     protected int experiencePts;
     protected int level;
+    protected final String SPECIAL_ABILITY_NAME;
 
     private InputReader reader;
 
-    public Player(String name, int health, int attack, int defense, InputReader reader){
+    public Player(String name, int health, int attack, int defense, InputReader reader, String specialAbilityName){
         super(CHARACTER,name,health,attack,defense);
         experiencePts = 0;
         level = 1;
         this.reader = reader;
-
+        this.SPECIAL_ABILITY_NAME = specialAbilityName;
     }
 
     @Override

@@ -27,7 +27,6 @@ public class Rogue extends Player{
 
     @Override
     public void onAbilityCast() {
-        currentEnergy = currentEnergy - cost;
-        //implementation...
+        if()
     }
 }
