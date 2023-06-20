@@ -9,4 +9,8 @@ public class DownStep implements Step {
         Position pos = unit.getPosition().add(0, -1);
         unit.moveTo(unit.getGameBoard().get(pos));
     }
+    @Override
+    public boolean equals(Object object){
+        return object instanceof DownStep;
+    }
 }
