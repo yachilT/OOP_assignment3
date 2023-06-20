@@ -32,13 +32,14 @@ public class Warrior extends Player{
         if (remainingCooldown == 0)
             castSpecialAbility();
         else
-            messageCallback.send("Failed to cast " + SPECIAL_ABILITY_NAME + " Remaining cooldown: " + remainingCooldown);
+            messageCallback.send(name + " tried to cast " + SPECIAL_ABILITY_NAME + ", but there is a cooldown:" + remainingCooldown);
     }
     @Override
     public void castSpecialAbility() {
-        messageCallback.send(this.name + " casts " + SPECIAL_ABILITY_NAME);
+        int toHeal = 10 * defensePts;
+        messageCallback.send(this.name + " casts " + SPECIAL_ABILITY_NAME + ", healing for " + toHeal);
         remainingCooldown = ABILITY_COOLDOWN;
-        health.heal(10 * defensePts);
+        health.heal(toHeal);
         List<Enemy> enemies = gameBoard.getEnemiesInRange(this, ABILITY_RANGE);
         Enemy enemyToHit = enemies.get(rand.nextInt(enemies.size()));
         enemyToHit.dealDamage(this.health.getHealthAmount() * 0.1, this);

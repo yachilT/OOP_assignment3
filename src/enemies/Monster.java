@@ -7,7 +7,6 @@ import java.util.Random;
 
 public class Monster extends Enemy {
 
-    private Random rand;
     private final double VISION_RANGE;
     public Monster(char character, String name, int health, int attackPts, int defencePts, int xpValue, int visionRange) {
         super(character, name, health, attackPts, defencePts, xpValue);

@@ -1,6 +1,10 @@
 package players;
 
+import enemies.Enemy;
 import resources.*;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class Mage extends Player{
     private Mana mana;
@@ -8,8 +12,9 @@ public class Mage extends Player{
     private int spellPower;
     private int hitCount;
     private int abilityRange;
+
     public Mage(String name, int health, int attackPts, int defensePts, int manaPool,int manaCost, int spellPower, int hitsCount, int abilityRange){
-        super(name,health,attackPts,defensePts);
+        super(name,health,attackPts,defensePts, "Blizzard");
         this.mana = new Mana(manaPool, manaPool / 4);
         this.manaCost = manaCost;
         this.spellPower = spellPower;
@@ -26,11 +31,21 @@ public class Mage extends Player{
         mana.setCurrentMana(Math.min(mana.getManaPool(),mana.getCurrentMana() + level));
     }
     public void onAbilityCast(){
-
+        if(mana.getCurrentMana() >= manaCost)
+            castSpecialAbility();
+        else
+            messageCallback.send(name + " tried to cast " + SPECIAL_ABILITY_NAME + ", but there was not enough mana: " + mana.getCurrentMana() + "/" + manaCost  );
     }
     public  void castSpecialAbility(){
-        mana.setCurrentMana(Math.max(mana.getCurrentMana() - manaCost,0));
+        messageCallback.send(name + " cast " + SPECIAL_ABILITY_NAME);
+        mana.decreaseCurrentMana(manaCost);
         int hits = 0;
-        //implementation
+        List<Enemy> enemiesInRange = gameBoard.getEnemiesInRange(this, abilityRange);
+        while(hits < hitCount && !enemiesInRange.isEmpty()){
+            enemiesInRange.get(random.nextInt(enemiesInRange.size() - 1)).dealDamage(attackPts, this);
+            hits++;
+            enemiesInRange = gameBoard.getEnemiesInRange(this, abilityRange);
+        }
+
     }
 }
