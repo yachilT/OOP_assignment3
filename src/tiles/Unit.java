@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public abstract class Unit extends Tile {
+public abstract class Unit extends Tile implements DeathListener {
     protected String name;
     protected int attackPts;
     protected int defensePts;
@@ -59,25 +59,26 @@ public abstract class Unit extends Tile {
     }
     private int attack() {
         int pts = random.nextInt(0, attackPts);
-        this.messageCallback.send(this.name + " rolled " + pts + "attack pts.");
+        this.messageCallback.send(this.name + " rolled " + pts + " attack pts.");
         return pts;
     }
     public int defend() {
         int pts = random.nextInt(0, defensePts);
-        this.messageCallback.send(this.name + " rolled " + pts + "defend pts");
+        this.messageCallback.send(this.name + " rolled " + pts + " defend pts.");
         return pts;
 
     }
 
-    public void dealDamage(double damage){
-        this.health.decreaseHealth(damage);
+    public void dealDamage(double damage, Unit attacker){
+        if (this.health.decreaseHealth(damage))
+            attacker.registerDeathListener(this);
     }
 
     public void combat(Unit defender){
         double damage = this.attack() - defender.defend();
         if(damage > 0) {
             messageCallback.send(this.name + " dealt " + damage + " damage pts to " + defender.getName());
-            defender.dealDamage(damage);
+            defender.dealDamage(damage, this);
         }
     }
 

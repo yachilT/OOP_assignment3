@@ -1,11 +1,9 @@
 package players;
 import IO.InputReader;
+import IO.MessageCallback;
 import gameBoard.GameBoard;
 import IO.DeathListener;
-import movment.Action;
-import movment.SpecialAbility;
-import movment.Stay;
-import movment.Step;
+import movment.*;
 import tiles.Unit;
 import enemies.*;
 
@@ -15,18 +13,22 @@ import java.util.Objects;
 public abstract class Player extends Unit implements DeathListener {
     final static private char CHARACTER = '@';
     final static private char DEATH_CHARACTER = 'X';
+
+    protected final String FAILED_ABILITY_CAST_MSG = "Failed to cast special ability";
     protected int experiencePts;
     protected int level;
-    protected final String SPECIAL_ABILITY_NAME;
 
     private InputReader reader;
 
-    public Player(String name, int health, int attack, int defense, InputReader reader, String specialAbilityName){
+    public Player(String name, int health, int attack, int defense){
         super(CHARACTER,name,health,attack,defense);
         experiencePts = 0;
         level = 1;
+    }
+
+    public void initialize(Position position, MessageCallback messageCallback, GameBoard gameBoard, InputReader reader) {
+        super.initialize(position, messageCallback, gameBoard);
         this.reader = reader;
-        this.SPECIAL_ABILITY_NAME = specialAbilityName;
     }
 
     @Override

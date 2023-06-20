@@ -12,8 +12,8 @@ public class Warrior extends Player{
 
     private final double ABILITY_RANGE = 3;
     private Random rand;
-    public Warrior(String name, int health, int attackPts, int defensePts, int abilityCooldown, InputReader reader){
-        super(name, health, attackPts, defensePts, reader);
+    public Warrior(String name, int health, int attackPts, int defensePts, int abilityCooldown){
+        super(name, health, attackPts, defensePts);
         this.ABILITY_COOLDOWN = abilityCooldown;
         this.remainingCooldown = 0;
     }
@@ -31,6 +31,8 @@ public class Warrior extends Player{
     public void onAbilityCast() {
         if (remainingCooldown == 0)
             castSpecialAbility();
+        else
+            messageCallback.send("Failed to cast special ability. Remaining cooldown: " + remainingCooldown);
     }
     @Override
     public void castSpecialAbility() {
@@ -38,6 +40,6 @@ public class Warrior extends Player{
         health.heal(10 * defensePts);
         List<Enemy> enemies = gameBoard.getEnemiesInRange(this, ABILITY_RANGE);
         Enemy enemyToHit = enemies.get(rand.nextInt(enemies.size()));
-        enemyToHit.dealDamage(this.health.getHealthAmount() * 0.1);
+        enemyToHit.dealDamage(this.health.getHealthAmount() * 0.1, this);
     }
 }
