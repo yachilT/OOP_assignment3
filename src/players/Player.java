@@ -86,9 +86,9 @@ public abstract class Player extends Unit implements DeathListener {
     @Override
     public Action determineAction() {
         String s = reader.read();
-        if (Action.actionDict.containsKey(s))
-            return Action.actionDict.get(s);
-        return new Stay();
+        while (!Action.actionDict.containsKey(s))
+            s = reader.read();
+        return Action.actionDict.get(s);
     }
 
     @Override

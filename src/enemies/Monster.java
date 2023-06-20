@@ -25,7 +25,7 @@ public class Monster extends Enemy {
         super.onGameTick();
     }
 
-    public Step determineAction() {
+    public Action determineAction() {
         if (this.position.range(player.getPosition()) < VISION_RANGE) {
             int dx = this.position.x - player.getPosition().x;
             int dy = this.position.y - player.getPosition().y;
@@ -42,8 +42,8 @@ public class Monster extends Enemy {
                     return new DownStep();
         }
         else {
-            Step[] steps = (Step[]) Step.stepsDict.values().toArray();
-            return steps[random.nextInt(steps.length)];
+            Action[] steps = (Action[]) Action.actionDict.values().toArray();
+            return steps[random.nextInt(steps.length - 1)];
         }
     }
 }
