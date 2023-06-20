@@ -9,4 +9,8 @@ public class RightStep implements Step{
         Position pos = unit.getPosition().add(1, 0);
         unit.moveTo(unit.getGameBoard().get(pos));
     }
+    @Override
+    public boolean equals(Object object){
+        return object instanceof RightStep;
+    }
 }

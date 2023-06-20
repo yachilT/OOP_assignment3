@@ -23,4 +23,11 @@ public class Position implements Comparable<Position>{
     public Position add(int x, int y) {
         return new Position(this.x + x, this.y + y);
     }
+
+    @Override
+    public boolean equals(Object object){
+        if(object instanceof Position)
+            return x == ((Position) object).x & y == ((Position) object).y;
+        return false;
+    }
 }

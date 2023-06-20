@@ -8,4 +8,8 @@ public class Stay implements Step {
     public void act(Unit unit) {
         //Do nothing
     }
+    @Override
+    public boolean equals(Object object){
+        return object instanceof Stay;
+    }
 }
