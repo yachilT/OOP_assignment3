@@ -2,6 +2,9 @@ package players;
 import IO.InputReader;
 import gameBoard.GameBoard;
 import IO.DeathListener;
+import movment.Action;
+import movment.SpecialAbility;
+import movment.Stay;
 import movment.Step;
 import tiles.Unit;
 import enemies.*;
@@ -11,6 +14,7 @@ import java.util.Objects;
 
 public abstract class Player extends Unit implements DeathListener {
     final static private char CHARACTER = '@';
+    final static private char DEATH_CHARACTER = 'X';
     protected int experiencePts;
     protected int level;
 
@@ -62,6 +66,12 @@ public abstract class Player extends Unit implements DeathListener {
     public void acceptBoard(GameBoard board){
         board.receiveDeath(this);
     }
+
+    @Override
+    public void onDeath(){
+        this.character = DEATH_CHARACTER;
+        super.onDeath();
+    }
     @Override
     public void receiveDeath(Unit unit) {
         unit.acceptKiller(this);
@@ -72,17 +82,23 @@ public abstract class Player extends Unit implements DeathListener {
         messageCallback.send(enemy.getName() + " gained " + enemy.getXpValue() + "experience");
         experiencePts += enemy.getXpValue();
     }
-    public Step determineAction() {
-        String s = reader.read();
-        if (Step.stepsDict.containsKey(s))
-            return Step.stepsDict.get(s);
-        else
 
+    @Override
+    public Action determineAction() {
+        String s = reader.read();
+        if (Action.actionDict.containsKey(s))
+            return Action.actionDict.get(s);
+        return new Stay();
     }
 
     @Override
     public void acceptKiller(Player player) {
        //Impossible scenario
+    }
+
+    @Override
+    public void acceptSpecialAbility(SpecialAbility ability){
+        ability.act(this);
     }
 
 }

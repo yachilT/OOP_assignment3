@@ -2,6 +2,7 @@ package enemies;
 
 import gameBoard.GameBoard;
 import IO.MessageCallback;
+import movment.SpecialAbility;
 import players.Player;
 import movment.Position;
 import tiles.Unit;
@@ -40,5 +41,10 @@ public abstract class Enemy extends Unit {
     @Override
     public void acceptBoard(GameBoard board){
         board.receiveDeath(this);
+    }
+
+    @Override
+    public void acceptSpecialAbility(SpecialAbility ability){
+        ability.act(this);
     }
 }

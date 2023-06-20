@@ -15,7 +15,9 @@ import java.util.stream.Collectors;
 
 public class GameBoard implements DeathListener {
     private List<Tile> tiles;
-    public GameBoard(Tile[][] board){
+    private List<Enemy> enemies;
+    public GameBoard(Tile[][] board, List<Enemy> enemies){
+        this.enemies = enemies;
         tiles = new ArrayList<>();
         for(Tile[] line: board)
             tiles.addAll(Arrays.asList(line));
@@ -29,6 +31,7 @@ public class GameBoard implements DeathListener {
     }
     public void remove(Enemy e){
         tiles.remove(e);
+        this.enemies.remove(e);
         tiles.add(new Empty(e.getPosition()));
     }
     public String toString(){
@@ -46,14 +49,19 @@ public class GameBoard implements DeathListener {
         return output;
     }
 
+
     @Override
     public void receiveDeath(Unit unit) {
-
+        unit.acceptBoard(this);
     }
     public void receiveDeath(Enemy e){
         remove(e);
     }
-    public void receiveDeath(Player p){
+    public void receiveDeath(Player p) {
+        //stop the game
+    }
 
+    public List<Enemy> getEnemiesInRange(Unit unit, double range) {
+        return enemies.stream().filter(e -> !e.equals(unit) && unit.getPosition().range(e.getPosition()) < range).toList();
     }
 }

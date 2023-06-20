@@ -2,8 +2,8 @@ package resources;
 
 public class Health {
     private int healthPool;
-    private int healthAmount;
-    public Health(int healthPool, int healthAmount) {
+    private double healthAmount;
+    public Health(int healthPool, double healthAmount) {
         this.healthPool = healthPool;
         this.healthAmount = healthAmount;
     }
@@ -11,18 +11,18 @@ public class Health {
         this.healthPool = healthPool;
     }
 
-    public void increaseHealthPool(int toIncrease){
+    public void increaseHealthPool(double toIncrease){
         this.healthPool += toIncrease;
     }
     public void regenerate() {
         this.healthAmount = healthPool;
     }
 
-    public void decreaseHealth(int damage) {
+    public void decreaseHealth(double damage) {
         this.healthAmount = Math.max(this.healthAmount - damage, 0);
     }
 
-    public void heal(int amount) {
+    public void heal(double amount) {
         this.healthAmount = Math.min(this.healthAmount + amount, healthPool);
     }
 
@@ -30,7 +30,7 @@ public class Health {
         return healthPool;
     }
 
-    public int getHealthAmount() {
+    public double getHealthAmount() {
         return healthAmount;
     }
 

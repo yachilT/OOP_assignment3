@@ -1,11 +1,20 @@
 package players;
 
+import IO.InputReader;
+import enemies.Enemy;
+
+import java.util.List;
+import java.util.Random;
+
 public class Warrior extends Player{
-    private int abilityCooldown;
+    private final int ABILITY_COOLDOWN;
     private int remainingCooldown;
-    public Warrior(String name, int health, int attackPts, int defensePts, int abilityCooldown){
-        super(name,health,attackPts,defensePts);
-        this.abilityCooldown = abilityCooldown;
+
+    private final double ABILITY_RANGE = 3;
+    private Random rand;
+    public Warrior(String name, int health, int attackPts, int defensePts, int abilityCooldown, InputReader reader){
+        super(name, health, attackPts, defensePts, reader);
+        this.ABILITY_COOLDOWN = abilityCooldown;
         this.remainingCooldown = 0;
     }
     public void uponLevelingUp(){
@@ -16,15 +25,19 @@ public class Warrior extends Player{
         defensePts += level;
     }
     public void onGameTick(){
+        super.onGameTick();
         remainingCooldown = Math.max(0,remainingCooldown - 1);
     }
     public void onAbilityCast() {
-        remainingCooldown = abilityCooldown;
-        health.heal(10 * defensePts);
-        // Randomly hits one enemy within range < 3 ...
+        if (remainingCooldown == 0)
+            castSpecialAbility();
     }
     @Override
     public void castSpecialAbility() {
-
+        remainingCooldown = ABILITY_COOLDOWN;
+        health.heal(10 * defensePts);
+        List<Enemy> enemies = gameBoard.getEnemiesInRange(this, ABILITY_RANGE);
+        Enemy enemyToHit = enemies.get(rand.nextInt(enemies.size()));
+        enemyToHit.dealDamage(this.health.getHealthAmount() * 0.1);
     }
 }

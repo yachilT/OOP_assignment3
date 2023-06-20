@@ -4,8 +4,9 @@ import enemies.Enemy;
 import gameBoard.*;
 import IO.DeathListener;
 import IO.MessageCallback;
+import movment.Action;
 import movment.Position;
-import movment.Step;
+import movment.SpecialAbility;
 import players.Player;
 import resources.Health;
 
@@ -24,12 +25,12 @@ public abstract class Unit extends Tile {
 
     protected final List<DeathListener> deathListeners;
 
-    public Unit(char character, String name,int health, int attackPts, int defensePts) {
+    public Unit(char character, String name, int health, int attackPts, int defensePts) {
         super(character);
         this.name = name;
         this.attackPts = attackPts;
         this.defensePts = defensePts;
-        this.health = new Health(health,health);
+        this.health = new Health(health, health);
         this.random = new Random();
         this.deathListeners = new ArrayList<>();
 
@@ -40,7 +41,7 @@ public abstract class Unit extends Tile {
         this.gameBoard = gameBoard;
         this.registerDeathListener(gameBoard);
     }
-    public abstract Step determineAction();
+    public abstract Action determineAction();
     public abstract void acceptBoard(GameBoard board);
     public abstract void moveTo(Enemy enemy);
     public abstract void moveTo(Player player);
@@ -48,14 +49,12 @@ public abstract class Unit extends Tile {
 
 
     public void onGameTick() {
-
-        Position nextPos = determineAction().calcNextPos(position);
-        if (!nextPos.equals(this.position))
-            this.moveTo(gameBoard.get(nextPos));
+        Action action = determineAction();
+        action.act(this);
 
         if (health.getHealthAmount() == 0) {
             messageCallback.send(this.name + " has died");
-            notifyDeathListeners();
+            onDeath();
         }
     }
     private int attack() {
@@ -70,15 +69,20 @@ public abstract class Unit extends Tile {
 
     }
 
+    public void dealDamage(double damage){
+        this.health.decreaseHealth(damage);
+    }
+
     public void combat(Unit defender){
-        int damage = this.attack() - defender.defend();
+        double damage = this.attack() - defender.defend();
         if(damage > 0) {
             messageCallback.send(this.name + " dealt " + damage + " damage pts to " + defender.getName());
-            defender.health.decreaseHealth(damage);
+            defender.dealDamage(damage);
         }
     }
 
-    public void notifyDeathListeners(){
+
+    public void onDeath(){
         deathListeners.forEach(l -> l.receiveDeath(this));
     }
 
@@ -99,6 +103,9 @@ public abstract class Unit extends Tile {
     public void moveTo(Wall wall){
         // Do nothing
     }
+
+
+    public abstract void acceptSpecialAbility(SpecialAbility ability);
 
     public String getName() {
         return name;
