@@ -21,8 +21,6 @@ public abstract class Enemy extends Unit {
         this.player = player;
     }
 
-
-
     public int getXpValue(){
         return xpValue;
     }
