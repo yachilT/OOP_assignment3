@@ -42,4 +42,8 @@ public class Rogue extends Player{
         else
             messageCallback.send(name + " tried to cast " + SPECIAL_ABILITY_NAME + ", but there was not enough energy: " + currentEnergy + "/" + cost );
     }
+    @Override
+    public String describe(){
+        return super.describe() + String.format("\t\tEnergy: %d/%d",currentEnergy,MAX_ENERGY);
+    }
 }

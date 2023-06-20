@@ -35,6 +35,6 @@ public class Mana {
 
     @Override
     public String toString() {
-        return "Mana pool: "+ manaPool + " Current mana: "+ currentMana;
+        return String.format("Mana: %d/%d", currentMana, manaPool);
     }
 }

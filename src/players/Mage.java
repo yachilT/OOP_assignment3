@@ -46,6 +46,9 @@ public class Mage extends Player{
             hits++;
             enemiesInRange = gameBoard.getEnemiesInRange(this, abilityRange);
         }
-
+    }
+    @Override
+    public String describe(){
+        return super.describe() + String.format("\t\t%s\t\tSpell Power: %d",mana.toString(),spellPower);
     }
 }

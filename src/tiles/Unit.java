@@ -112,7 +112,7 @@ public abstract class Unit extends Tile implements DeathListener {
         return name;
     }
     public String describe(){
-        return String.format("%s\t\tHealth: %s\t\tAttack: %d\t\tDefense: %d", name, health.toString(), attackPts, defensePts);
+        return String.format("%s\t\t%s\t\tAttack: %d\t\tDefense: %d", name, health.toString(), attackPts, defensePts);
     }
 
     public GameBoard getGameBoard() {

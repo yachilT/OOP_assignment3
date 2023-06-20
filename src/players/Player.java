@@ -16,7 +16,6 @@ public abstract class Player extends Unit implements DeathListener {
     protected final String SPECIAL_ABILITY_NAME;
     protected int experiencePts;
     protected int level;
-
     private InputReader reader;
 
     public Player(String name, int health, int attack, int defense, String specialAbilityName){
@@ -102,6 +101,10 @@ public abstract class Player extends Unit implements DeathListener {
     @Override
     public void acceptSpecialAbility(SpecialAbility ability){
         ability.act(this);
+    }
+    @Override
+    public String describe(){
+        return super.describe() + String.format("\t\tLevel: %d\nExperience: %d/%d",level,experiencePts,50 * level);
     }
 
 }
