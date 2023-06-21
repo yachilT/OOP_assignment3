@@ -1,22 +1,26 @@
 package players;
+import IO.DeathCallback;
 import IO.InputReader;
 import IO.MessageCallback;
-import gameBoard.GameBoard;
-import IO.DeathListener;
+import gameBoard.EnemiesGetter;
 import movment.*;
 import tiles.Unit;
 import enemies.*;
 
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.Map;
 
-public abstract class Player extends Unit implements DeathListener {
-    final static private char CHARACTER = '@';
+public abstract class Player extends Unit {
+    final static public char CHARACTER = '@';
     final static private char DEATH_CHARACTER = 'X';
     protected final String SPECIAL_ABILITY_NAME;
+
     protected int experiencePts;
     protected int level;
+
+    protected EnemiesGetter enemiesGetter;
+
     private InputReader reader;
+
 
     public Player(String name, int health, int attack, int defense, String specialAbilityName){
         super(CHARACTER,name,health,attack,defense);
@@ -25,17 +29,12 @@ public abstract class Player extends Unit implements DeathListener {
         SPECIAL_ABILITY_NAME = specialAbilityName;
     }
 
-    public void initialize(Position position, MessageCallback messageCallback, GameBoard gameBoard, InputReader reader) {
-        super.initialize(position, messageCallback, gameBoard);
+    public void initialize(Position position, MessageCallback messageCallback, Map<String, Action> actions, DeathCallback deathCallback, InputReader reader, EnemiesGetter enemiesGetter) {
+        super.initialize(position, messageCallback, actions, deathCallback);
         this.reader = reader;
+        this.enemiesGetter = enemiesGetter;
     }
 
-    @Override
-    public void onGameTick() {
-        super.onGameTick();
-        if (experiencePts >= 50 * level)
-            uponLevelingUp();
-    }
 
     public void uponLevelingUp(){
         int xpPts = Math.max((experiencePts - 50 * level), 0);
@@ -50,61 +49,36 @@ public abstract class Player extends Unit implements DeathListener {
         attackPts += attackToIncrease;
         defensePts += defenseToIncrease;
     }
-    public abstract void castSpecialAbility();
-    public abstract void onAbilityCast();
 
     public void acceptMove(Unit unit) {
         unit.moveTo(this);
     }
     public void moveTo(Enemy enemy) {
-        this.combat(enemy);
+         this.combat(enemy);
     }
     public void moveTo(Player player) {
         // Impossible scenario.
     }
 
 
-    @Override
-    public void acceptBoard(GameBoard board){
-        board.receiveDeath(this);
-    }
-
-    @Override
-    public void onDeath(){
-        this.character = DEATH_CHARACTER;
-        super.onDeath();
-    }
-    @Override
-    public void receiveDeath(Unit unit) {
-        unit.acceptKiller(this);
+    public void receiveXP(int XP){
+        messageCallback.send(this.name + " gained " + XP + "experience");
+        experiencePts += XP;
+        if (experiencePts >= 50 * level)
+            uponLevelingUp();
     }
 
 
-    public void uponOpponentDeath(Enemy enemy){
-        messageCallback.send(enemy.getName() + " gained " + enemy.getXpValue() + "experience");
-        experiencePts += enemy.getXpValue();
-    }
 
-    @Override
     public Action determineAction() {
         String s = reader.read();
-        while (!Action.actionDict.containsKey(s))
+        while (!actionMap.containsKey(s))
             s = reader.read();
-        return Action.actionDict.get(s);
+        return actionMap.get(s);
     }
 
-    @Override
-    public void acceptKiller(Player player) {
-       //Impossible scenario
-    }
 
-    @Override
-    public void acceptSpecialAbility(SpecialAbility ability){
-        ability.act(this);
-    }
-    @Override
-    public String describe(){
-        return super.describe() + String.format("\t\tLevel: %d\nExperience: %d/%d",level,experiencePts,50 * level);
-    }
+
+
 
 }

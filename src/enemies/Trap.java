@@ -1,7 +1,8 @@
 package enemies;
 
+import movment.Action;
 import movment.Stay;
-import movment.Step;
+import players.Player;
 import tiles.Empty;
 import tiles.Unit;
 
@@ -26,13 +27,7 @@ public class Trap extends Enemy{
     }
 
     @Override
-    public Step determineAction() {
-        return new Stay();
-    }
-
-    @Override
-    public void onGameTick(){
-        super.onGameTick();
+    public Action determineAction(Player player) {
         this.visible = ticksCount < VISIBILITY_TIME;
         if (ticksCount == (VISIBILITY_TIME + INVISIBILITY_TIME))
             this.ticksCount = 0;
@@ -41,7 +36,9 @@ public class Trap extends Enemy{
 
         if (this.position.range(player.getPosition()) < VISION_RANGE)
             super.combat(player);
+        return new Stay();
     }
+
     @Override
     public String toString(){
         return visible ? character + "" : Empty.EMPTY_CHAR + "";

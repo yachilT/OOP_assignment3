@@ -1,8 +1,8 @@
 package tiles;
 
+import IO.DeathCallback;
 import enemies.Enemy;
 import gameBoard.*;
-import IO.DeathListener;
 import IO.MessageCallback;
 import movment.Action;
 import movment.Position;
@@ -12,18 +12,21 @@ import resources.Health;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
-public abstract class Unit extends Tile implements DeathListener {
+public abstract class Unit extends Tile {
     protected String name;
     protected int attackPts;
     protected int defensePts;
     protected Health health;
     protected Random random;
     protected MessageCallback messageCallback;
-    protected GameBoard gameBoard;
 
-    protected final List<DeathListener> deathListeners;
+    protected DeathCallback deathCallback;
+
+    protected Map<String, Action> actionMap;
+
 
     public Unit(char character, String name, int health, int attackPts, int defensePts) {
         super(character);
@@ -32,31 +35,31 @@ public abstract class Unit extends Tile implements DeathListener {
         this.defensePts = defensePts;
         this.health = new Health(health, health);
         this.random = new Random();
-        this.deathListeners = new ArrayList<>();
+
 
     }
-    public void initialize(Position position, MessageCallback messageCallback, GameBoard gameBoard){
+    public void initialize(Position position, MessageCallback messageCallback, Map<String, Action> actionMap, DeathCallback deathCallback){
         super.initialize(position);
         this.messageCallback = messageCallback;
-        this.gameBoard = gameBoard;
-        this.registerDeathListener(gameBoard);
+        this.actionMap = actionMap;
+        this.deathCallback = deathCallback;
     }
-    public abstract Action determineAction();
-    public abstract void acceptBoard(GameBoard board);
+
+    public void moveTo(Tile tile) {
+        tile.acceptMove(this);
+    }
+    public void moveTo(Empty empty){
+        Position temp = this.position;
+        this.position = empty.position;
+        empty.position = temp;
+    }
+
+    public void moveTo(Wall wall){
+        // Do nothing
+    }
+
     public abstract void moveTo(Enemy enemy);
     public abstract void moveTo(Player player);
-    public abstract void  acceptKiller(Player player);
-
-
-    public void onGameTick() {
-        Action action = determineAction();
-        action.act(this);
-
-        if (health.getHealthAmount() == 0) {
-            messageCallback.send(this.name + " has died");
-            onDeath();
-        }
-    }
     private int attack() {
         int pts = random.nextInt(0, attackPts);
         this.messageCallback.send(this.name + " rolled " + pts + " attack pts.");
@@ -69,44 +72,27 @@ public abstract class Unit extends Tile implements DeathListener {
 
     }
 
-    public void dealDamage(double damage, Unit attacker){
-        if (this.health.decreaseHealth(damage))
-            attacker.registerDeathListener(this);
+    public void dealDamage(double damage){
+        if (this.health.decreaseHealth(damage) == 0) {
+            messageCallback.send(this.name + " has died");
+            deathCallback.onDeath();
+        }
     }
 
     public void combat(Unit defender){
         double damage = this.attack() - defender.defend();
         if(damage > 0) {
             messageCallback.send(this.name + " dealt " + damage + " damage pts to " + defender.getName());
-            defender.dealDamage(damage, this);
+            defender.dealDamage(damage);
         }
     }
 
 
-    public void onDeath(){
-        deathListeners.forEach(l -> l.receiveDeath(this));
-    }
-
-    public void registerDeathListener(DeathListener deathListener){
-        deathListeners.add(deathListener);
-    }
-
-    public void moveTo(Tile tile) {
-        tile.acceptMove(this);
-    }
-
-    public void moveTo(Empty empty){
-        Position temp = this.position;
-        this.position = empty.position;
-        empty.position = temp;
-    }
-
-    public void moveTo(Wall wall){
-        // Do nothing
-    }
 
 
-    public abstract void acceptSpecialAbility(SpecialAbility ability);
+
+    protected abstract void castSpecialAbility();
+    public abstract void onAbilityCastAttempt();
 
     public String getName() {
         return name;
@@ -115,7 +101,4 @@ public abstract class Unit extends Tile implements DeathListener {
         return String.format("%s\t\t%s\t\tAttack: %d\t\tDefense: %d", name, health.toString(), attackPts, defensePts);
     }
 
-    public GameBoard getGameBoard() {
-        return gameBoard;
-    }
 }

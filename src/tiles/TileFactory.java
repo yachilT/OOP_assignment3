@@ -1,11 +1,8 @@
 package tiles;
 
-import IO.Message;
-import IO.MessageCallback;
 import enemies.*;
 import enemies.Monster;
-import gameBoard.GameBoard;
-import movment.Position;
+import movment.Action;
 import players.*;
 
 import java.util.List;
@@ -17,6 +14,8 @@ import java.util.stream.Collectors;
 public class TileFactory {
     private List<Supplier<Player>> playersList;
     private Map<String, Supplier<Enemy>> enemiesMap;
+
+
     private Player selected;
     public TileFactory(){
         playersList = initPlayers();
@@ -47,14 +46,29 @@ public class TileFactory {
                 () -> new Rogue("Bronn", 250, 35, 3, 50)
         );
     }
+
+
     public List<Player> listPlayers(){
         return playersList.stream().map(Supplier::get).collect(Collectors.toList());
     }
-    public Enemy produceEnemy(String tile, Position position, GameBoard gameBoard,Player player){
-        Enemy e =  enemiesMap.get(tile).get();
-        e.initialize();
+
+    public Player producePlayer(int idx){
+        return listPlayers().get(idx);
     }
-    public
+    public Enemy produceEnemy(String tile) {
+        return enemiesMap.get(tile).get();
+    }
+
+    public Wall produceWall(){
+        return new Wall();
+    }
+
+    public Empty produceEmpty(){
+        return new Empty();
+    }
+
+
+
 
 }
 

@@ -30,25 +30,25 @@ public class Mage extends Player{
     public void onGameTick(){
         mana.setCurrentMana(Math.min(mana.getManaPool(),mana.getCurrentMana() + level));
     }
-    public void onAbilityCast(){
+    public void onAbilityCastAttempt(){
         if(mana.getCurrentMana() >= manaCost)
             castSpecialAbility();
         else
             messageCallback.send(name + " tried to cast " + SPECIAL_ABILITY_NAME + ", but there was not enough mana: " + mana.getCurrentMana() + "/" + manaCost  );
     }
-    public  void castSpecialAbility(){
+    protected   void castSpecialAbility(){
         messageCallback.send(name + " cast " + SPECIAL_ABILITY_NAME);
         mana.decreaseCurrentMana(manaCost);
         int hits = 0;
-        List<Enemy> enemiesInRange = gameBoard.getEnemiesInRange(this, abilityRange);
+        List<Enemy> enemiesInRange = enemiesGetter.getInRange(this.position, abilityRange);
         while(hits < hitCount && !enemiesInRange.isEmpty()){
-            enemiesInRange.get(random.nextInt(enemiesInRange.size() - 1)).dealDamage(attackPts, this);
+            enemiesInRange.get(random.nextInt(enemiesInRange.size() - 1)).dealDamage(attackPts);
             hits++;
-            enemiesInRange = gameBoard.getEnemiesInRange(this, abilityRange);
+            enemiesInRange = enemiesGetter.getInRange(this.position, abilityRange);
         }
     }
     @Override
     public String describe(){
-        return super.describe() + String.format("\t\t%s\t\tSpell Power: %d",mana.toString(),spellPower);
+        return super.describe() + String.format("\t\t%s\t\tSpell Power: %d", mana.toString(), spellPower);
     }
 }

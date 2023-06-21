@@ -20,8 +20,8 @@ public class Position implements Comparable<Position>{
             return this.x - p.x;
     }
 
-    public Position add(int x, int y) {
-        return new Position(this.x + x, this.y + y);
+    public Position add(Position pos) {
+        return new Position(this.x + pos.x, this.y + pos.y);
     }
 
     @Override

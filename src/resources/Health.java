@@ -18,9 +18,9 @@ public class Health {
         this.healthAmount = healthPool;
     }
 
-    public boolean decreaseHealth(double damage) {
+    public double decreaseHealth(double damage) {
         this.healthAmount = Math.max(this.healthAmount - damage, 0);
-        return this.healthAmount == 0;
+        return this.healthAmount;
     }
 
     public void heal(double amount) {

@@ -1,6 +1,7 @@
 package enemies;
 
 import movment.*;
+import players.Player;
 import tiles.Unit;
 
 import java.util.Random;
@@ -19,29 +20,25 @@ public class Monster extends Enemy {
         unit.moveTo(this);
     }
 
-    @Override
-    public void onGameTick() {
-        super.onGameTick();
-    }
 
-    public Action determineAction() {
+    public Action determineAction(Player player) {
         if (this.position.range(player.getPosition()) < VISION_RANGE) {
             int dx = this.position.x - player.getPosition().x;
             int dy = this.position.y - player.getPosition().y;
             if (Math.abs(dx) > Math.abs(dy)) {
                 if (dx > 0)
-                    return new LeftStep();
+                    return actionMap.get("a");
                 else
-                    return new RightStep();
+                    return actionMap.get("d");
             }
             else
                 if(dy > 0)
-                    return new UpStep();
+                    return actionMap.get("w");
                 else
-                    return new DownStep();
+                    return actionMap.get("s");
         }
         else {
-            Action[] steps = (Action[]) Action.actionDict.values().toArray();
+            Action[] steps = (Action[]) actionMap.values().toArray();
             return steps[random.nextInt(steps.length - 1)];
         }
     }

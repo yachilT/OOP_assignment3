@@ -3,10 +3,14 @@ package tiles;
 import movment.Position;
 
 public class Wall extends Tile{
-    final static private char WALL_CHAR = '#';
+    final static public char WALL_CHAR = '#';
 
-    public Wall(Position position){
+    public Wall(){
         super(WALL_CHAR);
+    }
+
+    public void initialize(Position pos){
+        super.initialize(position);
     }
 
     @Override

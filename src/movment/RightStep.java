@@ -1,14 +1,15 @@
 package movment;
 
+import gameBoard.TileGetter;
 import tiles.Unit;
 
-public class RightStep implements Step{
+public class RightStep extends Step {
 
-    @Override
-    public void act(Unit unit) {
-        Position pos = unit.getPosition().add(1, 0);
-        unit.moveTo(unit.getGameBoard().get(pos));
+
+    public RightStep(TileGetter tileGetter) {
+        super(tileGetter, new Position(1, 0));
     }
+
     @Override
     public boolean equals(Object object){
         return object instanceof RightStep;

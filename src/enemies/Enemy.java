@@ -1,24 +1,15 @@
 package enemies;
 
-import gameBoard.GameBoard;
-import IO.MessageCallback;
-import movment.SpecialAbility;
+import movment.Action;
 import players.Player;
-import movment.Position;
 import tiles.Unit;
 
 public abstract class Enemy extends Unit {
+
     protected int xpValue;
-    protected Player player;
     public Enemy(char character, String name, int health, int attackPts, int defencePts, int xpValue){
         super(character,name,health,attackPts,defencePts);
         this.xpValue = xpValue;
-    }
-
-    public void initialize(Position position, MessageCallback messageCallback, GameBoard gameBoard, Player player) {
-        super.initialize(position, messageCallback, gameBoard);
-        this.registerDeathListener(player);
-        this.player = player;
     }
 
     public int getXpValue(){
@@ -31,23 +22,16 @@ public abstract class Enemy extends Unit {
         this.combat(player);
     }
 
+    public abstract Action determineAction(Player player);
+
+
     @Override
-    public void acceptKiller(Player player) {
-        player.uponOpponentDeath(this);
+    public void onAbilityCastAttempt() {
+        // does nothing for now
     }
 
     @Override
-    public void acceptBoard(GameBoard board){
-        board.receiveDeath(this);
-    }
-
-    @Override
-    public void acceptSpecialAbility(SpecialAbility ability){
-        ability.act(this);
-    }
-
-    @Override
-    public void receiveDeath(Unit unit) {
-        // does nothing...
+    public void castSpecialAbility() {
+        // does nothing for now
     }
 }
