@@ -42,11 +42,12 @@ public class Rogue extends Player{
 
     @Override
     protected void castSpecialAbility() {
+        messageCallback.send(this.name + " casts " + SPECIAL_ABILITY_NAME);
         List<Enemy> enemies = enemiesGetter.getInRange(this.position, ABILITY_RANGE);
         for (Enemy e : enemies) {
             int defense = e.defend();
             if (this.attackPts - defense > 0)
-                e.dealDamage(this.attackPts - defense);
+                e.dealDamage(this.attackPts - defense, this);
         }
     }
 

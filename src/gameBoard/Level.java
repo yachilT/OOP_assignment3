@@ -22,20 +22,22 @@ public class Level {
 
 
     public void start(ShowBoardCallback showBoardCallback){
+        showBoardCallback.showBoard(toString());
         while (!over & enemies.size() > 0){
+            Action action = player.determineAction();
+            action.act(player);
 
             for (Enemy e: enemies) {
-                Action action = e.determineAction(player);
+                action = e.determineAction(player);
                 action.act(e);
             }
 
-            Action action = player.determineAction();
-            action.act(player);
             showBoardCallback.showBoard(toString());
+            showBoardCallback.showBoard(player.describe());
         }
     }
     public void over(){
-        over = false;
+        over = true;
     }
     public void initialize(Player player, List<Enemy> enemies, List<Tile> tiles){
         this.player = player;
@@ -53,6 +55,7 @@ public class Level {
     }
     public void remove(Enemy e){
         this.enemies.remove(e);
+        this.tiles.remove(e);
         Empty emptyTile = new Empty();
         emptyTile.initialize(e.getPosition());
         tiles.add(emptyTile);
@@ -78,6 +81,6 @@ public class Level {
 
 
     public List<Enemy> getEnemiesInRange(Position pos, double range) {
-        return enemies.stream().filter(e -> !e.getPosition().equals(pos) && pos.range(e.getPosition()) < range).toList();
+        return enemies.stream().filter(e -> !e.getPosition().equals(pos) && pos.range(e.getPosition()) <= range).toList();
     }
 }

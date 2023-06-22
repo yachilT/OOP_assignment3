@@ -34,7 +34,7 @@ public class Trap extends Enemy{
         else
             ticksCount++;
 
-        if (this.position.range(player.getPosition()) < VISION_RANGE)
+        if (this.position.range(player.getPosition()) <= VISION_RANGE)
             super.combat(player);
         return new Stay();
     }

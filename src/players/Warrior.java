@@ -12,23 +12,24 @@ public class Warrior extends Player{
     private int remainingCooldown;
 
     private final double ABILITY_RANGE = 3;
-    private Random rand;
+    private final Random rand;
     public Warrior(String name, int health, int attackPts, int defensePts, int abilityCooldown){
         super(name, health, attackPts, defensePts, "Avenger's Shield");
         this.ABILITY_COOLDOWN = abilityCooldown;
         this.remainingCooldown = 0;
+        this.rand = new Random();
     }
     public void uponLevelingUp(){
         super.uponLevelingUp();
         remainingCooldown = 0;
-        health.increaseHealthPool( 5 * level);
+        health.increaseHealthPool(5 * level);
         attackPts += 2 * level;
         defensePts += level;
     }
 
     @Override
     public Action determineAction() {
-        this.remainingCooldown = Math.max(0,remainingCooldown - 1);
+        this.remainingCooldown = Math.max(0, remainingCooldown - 1);
         return super.determineAction();
     }
 
@@ -46,7 +47,7 @@ public class Warrior extends Player{
         health.heal(toHeal);
         List<Enemy> enemies = enemiesGetter.getInRange(this.position, ABILITY_RANGE);
         Enemy enemyToHit = enemies.get(rand.nextInt(enemies.size()));
-        enemyToHit.dealDamage(this.health.getHealthAmount() * 0.1);
+        enemyToHit.dealDamage(this.health.getHealthAmount() * 0.1, this);
     }
     @Override
     public String describe(){

@@ -37,7 +37,7 @@ public class Health {
 
     @Override
     public String toString() {
-        return String.format("Health: %f/%d",healthAmount,healthPool);
+        return String.format("Health: %.2f/%d",healthAmount,healthPool);
     }
 
 }

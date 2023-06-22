@@ -6,7 +6,9 @@ public abstract class Tile implements Comparable<Tile>{
     protected char character;
     protected Position position;
 
-    protected Tile(char character){this.character = character;}
+    protected Tile(char character) {
+        this.character = character;
+    }
     public void initialize(Position position) {
         this.position = position;
     }

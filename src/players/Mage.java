@@ -47,7 +47,7 @@ public class Mage extends Player{
         int hits = 0;
         List<Enemy> enemiesInRange = enemiesGetter.getInRange(this.position, abilityRange);
         while(hits < hitCount && !enemiesInRange.isEmpty()){
-            enemiesInRange.get(random.nextInt(enemiesInRange.size() - 1)).dealDamage(attackPts);
+            enemiesInRange.get(random.nextInt(enemiesInRange.size() - 1)).dealDamage(attackPts, this);
             hits++;
             enemiesInRange = enemiesGetter.getInRange(this.position, abilityRange);
         }

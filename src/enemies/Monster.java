@@ -23,7 +23,7 @@ public class Monster extends Enemy {
 
 
     public Action determineAction(Player player) {
-        if (this.position.range(player.getPosition()) < VISION_RANGE) {
+        if (this.position.range(player.getPosition()) <= VISION_RANGE) {
             int dx = this.position.x - player.getPosition().x;
             int dy = this.position.y - player.getPosition().y;
             if (Math.abs(dx) > Math.abs(dy)) {
@@ -34,9 +34,9 @@ public class Monster extends Enemy {
             }
             else
                 if(dy > 0)
-                    return actionMap.get("w");
-                else
                     return actionMap.get("s");
+                else
+                    return actionMap.get("w");
         }
         else {
             List<Action> actions = actionMap.values().stream().toList();

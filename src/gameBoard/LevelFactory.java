@@ -36,18 +36,18 @@ public class LevelFactory {
 
                 if (tilesChars[i][j] == Wall.WALL_CHAR) {
                     Wall wall = tileFactory.produceWall();
-                    wall.initialize(new Position(i, j));
+                    wall.initialize(new Position(j, i));
                     tiles.add(wall);
                 } else if (tilesChars[i][j] == Empty.EMPTY_CHAR) {
                     Empty empty = tileFactory.produceEmpty();
-                    empty.initialize(new Position(i, j));
+                    empty.initialize(new Position(j, i));
                     tiles.add(empty);
                 } else if (tilesChars[i][j] == Player.CHARACTER) {
-                    player.initialize(new Position(i, j), m, initActions(level), () -> {level.over(); gameOverCallback.gameOver();}, r, level::getEnemiesInRange);
+                    player.initialize(new Position(j, i), m, initActions(level), () -> {level.over(); gameOverCallback.gameOver();}, r, level::getEnemiesInRange);
                     tiles.add(player);
                 } else {
                     Enemy enemy = tileFactory.produceEnemy(String.valueOf(tilesChars[i][j]));
-                    enemy.initialize(new Position(i, j), m, initActions(level),
+                    enemy.initialize(new Position(j, i), m, initActions(level),
                             () -> {
                                 player.receiveXP(enemy.getXpValue());
                                 level.remove(enemy);

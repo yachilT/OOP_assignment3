@@ -72,18 +72,20 @@ public abstract class Unit extends Tile {
 
     }
 
-    public void dealDamage(double damage){
+    public void dealDamage(double damage, Unit attacker){
         if (this.health.decreaseHealth(damage) == 0) {
-            messageCallback.send(this.name + " has died");
-            deathCallback.onDeath();
+            messageCallback.send(String.format("%s dealt %.2f pts to %s", attacker.name, damage, this.name));
+            onDeath();
         }
     }
-
+    public void onDeath(){
+        messageCallback.send(this.name + " has died");
+        deathCallback.onDeath();
+    }
     public void combat(Unit defender){
         double damage = this.attack() - defender.defend();
         if(damage > 0) {
-            messageCallback.send(this.name + " dealt " + damage + " damage pts to " + defender.getName());
-            defender.dealDamage(damage);
+            defender.dealDamage(damage, this);
         }
     }
 

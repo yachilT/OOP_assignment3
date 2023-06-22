@@ -24,11 +24,11 @@ public class TileFactory {
     private Map<String, Supplier<Enemy>> initEnemies(){
         List<Supplier<Enemy>> enemies = Arrays.asList(
                 () -> new Monster('s', "Lannister Solider", 80, 8, 3,25, 3),
-                () -> new Monster('k', "Lannister Knight", 200, 14, 8, 50,   4),
-                () -> new Monster('q', "Queen's Guard", 400, 20, 15, 100,  5),
+                () -> new Monster('k', "Lannister Knight", 200, 14, 8, 50, 4),
+                () -> new Monster('q', "Queen's Guard", 400, 20, 15, 100, 5),
                 () -> new Monster('z', "Wright", 600, 30, 15,100, 3),
-                () -> new Monster('b', "Bear-Wright", 1000, 75, 30, 250,  4),
-                () -> new Monster('g', "Giant-Wright",1500, 100, 40,500,   5),
+                () -> new Monster('b', "Bear-Wright", 1000, 75, 30, 250, 4),
+                () -> new Monster('g', "Giant-Wright",1500, 100, 40,500,  5),
                 () -> new Monster('w', "White Walker", 2000, 150, 50, 1000, 6),
                 () -> new Trap('B', "Bonus Trap", 1, 1, 1, 250,  1, 10),
                 () -> new Trap('Q', "Queen's Trap", 250, 50, 10, 100, 3, 10),

@@ -78,6 +78,11 @@ public abstract class Player extends Unit {
         return actionMap.get(s);
     }
 
+    @Override
+    public void onDeath() {
+        super.onDeath();
+        this.character = DEATH_CHARACTER;
+    }
 
     @Override
     public String describe(){

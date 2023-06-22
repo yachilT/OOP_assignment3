@@ -79,7 +79,7 @@ public class GameController {
         String input = cli.getInputReader().read();
         while (true) {
             try {
-                return Integer.parseInt(input);
+                return Integer.parseInt(input) - 1;
             }
             catch (NumberFormatException e)
             {
