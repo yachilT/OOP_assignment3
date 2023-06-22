@@ -8,9 +8,7 @@ public class Empty extends Tile {
         super(EMPTY_CHAR);
     }
 
-    public void initialize(Position pos){
-        super.initialize(position);
-    }
+
     @Override
     public void acceptMove(Unit unit){
         unit.moveTo(this);

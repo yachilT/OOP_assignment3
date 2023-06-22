@@ -44,6 +44,8 @@ public class Level {
     }
     public Tile get(Position pos){
         for(Tile t : tiles){
+            if (t.getPosition() == null)
+                System.out.println(t.getTile());
             if(t.getPosition().equals(pos))
                 return t;
         }
@@ -65,7 +67,7 @@ public class Level {
             if(t.getPosition().y == y)
                 output += t.toString();
             else{
-                output += "\n";
+                output += "\n" + t;
                 y = t.getPosition().y;
             }
         }

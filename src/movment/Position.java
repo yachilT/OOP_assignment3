@@ -15,7 +15,7 @@ public class Position implements Comparable<Position>{
     @Override
     public int compareTo(Position p) {
         if(this.y - p.y != 0)
-            return this.y - p.y;
+            return p.y - this.y;
         else
             return this.x - p.x;
     }

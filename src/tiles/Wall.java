@@ -9,9 +9,6 @@ public class Wall extends Tile{
         super(WALL_CHAR);
     }
 
-    public void initialize(Position pos){
-        super.initialize(position);
-    }
 
     @Override
     public void acceptMove(Unit unit){
