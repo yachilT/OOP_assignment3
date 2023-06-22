@@ -4,6 +4,7 @@ import movment.*;
 import players.Player;
 import tiles.Unit;
 
+import java.util.List;
 import java.util.Random;
 
 public class Monster extends Enemy {
@@ -38,8 +39,8 @@ public class Monster extends Enemy {
                     return actionMap.get("s");
         }
         else {
-            Action[] steps = (Action[]) actionMap.values().toArray();
-            return steps[random.nextInt(steps.length - 1)];
+            List<Action> actions = actionMap.values().stream().toList();
+            return actions.get(random.nextInt(actions.size() - 1));
         }
     }
 }

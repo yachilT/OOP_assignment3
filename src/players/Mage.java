@@ -1,6 +1,7 @@
 package players;
 
 import enemies.Enemy;
+import movment.Action;
 import resources.*;
 
 import java.util.Iterator;
@@ -27,9 +28,13 @@ public class Mage extends Player{
         mana.increaseCurrentMana(mana.getCurrentMana() + mana.getManaPool() / 4);
         spellPower = spellPower + 10 * level;
     }
-    public void onGameTick(){
-        mana.setCurrentMana(Math.min(mana.getManaPool(),mana.getCurrentMana() + level));
+
+    @Override
+    public Action determineAction() {
+        mana.increaseCurrentMana(level);
+        return super.determineAction();
     }
+
     public void onAbilityCastAttempt(){
         if(mana.getCurrentMana() >= manaCost)
             castSpecialAbility();

@@ -1,6 +1,8 @@
 package gameBoard;
 
+import IO.MessageCallback;
 import enemies.Enemy;
+import movment.Action;
 import players.Player;
 import tiles.Empty;
 import movment.Position;
@@ -13,11 +15,27 @@ public class Level {
     private List<Tile> tiles;
     private List<Enemy> enemies;
     private Player player;
+
+    private boolean over;
     public Level(){
     }
 
-    public void over(){
 
+    public void start(ShowBoardCallback showBoardCallback){
+        while (!over & enemies.size() > 0){
+
+            for (Enemy e: enemies) {
+                Action action = e.determineAction(player);
+                action.act(e);
+            }
+
+            Action action = player.determineAction();
+            action.act(player);
+            showBoardCallback.showBoard(toString());
+        }
+    }
+    public void over(){
+        over = false;
     }
     public void initialize(Player player, List<Enemy> enemies, List<Tile> tiles){
         this.player = player;
@@ -39,13 +57,6 @@ public class Level {
     }
 
 
-    public void addTile(Tile t) {
-        tiles.add(t);
-    }
-    public void addEnemy(Enemy e) {
-        addTile(e);
-        enemies.add(e);
-    }
     public String toString(){
         tiles = tiles.stream().sorted().collect(Collectors.toList());
         String output = "";

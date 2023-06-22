@@ -12,11 +12,12 @@ import tiles.Wall;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class LevelFactory {
     TileFactory tileFactory;
@@ -24,7 +25,7 @@ public class LevelFactory {
     public LevelFactory(){
         tileFactory = new TileFactory();
     }
-    public Level produceLevel(String path, MessageCallback m, InputReader r, Player player){
+    public Level produceLevel(Path path, MessageCallback m, InputReader r, GameOverCallback gameOverCallback, Player player) throws IOException {
         char[][] tilesChars = readLevel(path);
         Level level = new Level();
         List<Enemy> enemies = new ArrayList<>();
@@ -42,7 +43,7 @@ public class LevelFactory {
                     empty.initialize(new Position(i, j));
                     tiles.add(empty);
                 } else if (tilesChars[i][j] == Player.CHARACTER) {
-                    player.initialize(new Position(i, j), m, initActions(level), level::over, r, level::getEnemiesInRange);
+                    player.initialize(new Position(i, j), m, initActions(level), () -> {level.over(); gameOverCallback.gameOver();}, r, level::getEnemiesInRange);
                     tiles.add(player);
                 } else {
                     Enemy enemy = tileFactory.produceEnemy(String.valueOf(tilesChars[i][j]));
@@ -62,14 +63,9 @@ public class LevelFactory {
         return level;
     }
 
-    private char[][] readLevel(String path) {
-        List<String> lines = Collections.emptyList();
-        try {
-            lines = Files.readAllLines(Paths.get(path));
-        } catch (IOException e) {
-            System.out.println(e.getMessage() + "\n" +
-                    e.getStackTrace());
-        }
+    private char[][] readLevel(Path path) throws IOException {
+        List<String> lines = Files.readAllLines(path);;
+
 
         char[][] tiles = new char[lines.size()][lines.get(0).length()];
         for (int i = 0; i < tiles.length; i++) {

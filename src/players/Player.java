@@ -14,6 +14,7 @@ public abstract class Player extends Unit {
     final static private char DEATH_CHARACTER = 'X';
     protected final String SPECIAL_ABILITY_NAME;
 
+    protected final int MAX_EXPERIENCE = 50;
     protected int experiencePts;
     protected int level;
 
@@ -37,7 +38,7 @@ public abstract class Player extends Unit {
 
 
     public void uponLevelingUp(){
-        int xpPts = Math.max((experiencePts - 50 * level), 0);
+        int xpPts = Math.max((experiencePts - MAX_EXPERIENCE * level), 0);
         this.level++;
         int healthPool =  10 * level;
         int attackToIncrease = 4 * level;
@@ -64,7 +65,7 @@ public abstract class Player extends Unit {
     public void receiveXP(int XP){
         messageCallback.send(this.name + " gained " + XP + "experience");
         experiencePts += XP;
-        if (experiencePts >= 50 * level)
+        if (experiencePts >= MAX_EXPERIENCE * level)
             uponLevelingUp();
     }
 
@@ -78,7 +79,10 @@ public abstract class Player extends Unit {
     }
 
 
-
+    @Override
+    public String describe(){
+        return super.describe() + String.format("\t\tLevel: %d\t\tExperience: %d/%d", level, experiencePts, MAX_EXPERIENCE);
+    }
 
 
 }
