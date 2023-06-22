@@ -6,16 +6,14 @@ import enemies.Enemy;
 import movment.*;
 import players.Player;
 import tiles.Empty;
+import tiles.Tile;
 import tiles.TileFactory;
 import tiles.Wall;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -27,33 +25,41 @@ public class LevelFactory {
         tileFactory = new TileFactory();
     }
     public Level produceLevel(String path, MessageCallback m, InputReader r, Player player){
-        char[][] tiles = readLevel(path);
+        char[][] tilesChars = readLevel(path);
         Level level = new Level();
-        for (int i = 0; i < tiles.length; i++) {
-            for (int j = 0; j < tiles[i].length; j++) {
+        List<Enemy> enemies = new ArrayList<>();
+        List<Tile> tiles = new ArrayList<>();
 
-                if (tiles[i][j] == Wall.WALL_CHAR) {
+        for (int i = 0; i < tilesChars.length; i++) {
+            for (int j = 0; j < tilesChars[i].length; j++) {
+
+                if (tilesChars[i][j] == Wall.WALL_CHAR) {
                     Wall wall = tileFactory.produceWall();
                     wall.initialize(new Position(i, j));
-                } else if (tiles[i][j] == Empty.EMPTY_CHAR) {
+                    tiles.add(wall);
+                } else if (tilesChars[i][j] == Empty.EMPTY_CHAR) {
                     Empty empty = tileFactory.produceEmpty();
                     empty.initialize(new Position(i, j));
-                } else if (tiles[i][j] == Player.CHARACTER) {
+                    tiles.add(empty);
+                } else if (tilesChars[i][j] == Player.CHARACTER) {
                     player.initialize(new Position(i, j), m, initActions(level), level::over, r, level::getEnemiesInRange);
+                    tiles.add(player);
                 } else {
-                    Enemy enemy = tileFactory.produceEnemy(String.valueOf(tiles[i][j]));
+                    Enemy enemy = tileFactory.produceEnemy(String.valueOf(tilesChars[i][j]));
                     enemy.initialize(new Position(i, j), m, initActions(level),
                             () -> {
                                 player.receiveXP(enemy.getXpValue());
                                 level.remove(enemy);
                             }
                     );
+                    enemies.add(enemy);
+                    tiles.add(enemy);
                 }
-
-
-                // insert tiles
             }
         }
+
+        level.initialize(player, enemies, tiles);
+        return level;
     }
 
     private char[][] readLevel(String path) {
