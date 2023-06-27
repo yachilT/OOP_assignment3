@@ -9,10 +9,8 @@ import java.util.Random;
 
 public class Monster extends Enemy {
 
-    private final double VISION_RANGE;
     public Monster(char character, String name, int health, int attackPts, int defencePts, int xpValue, int visionRange) {
-        super(character, name, health, attackPts, defencePts, xpValue);
-        this.VISION_RANGE = visionRange;
+        super(character, name, health, attackPts, defencePts, xpValue, visionRange);
         this.random = new Random();
     }
 
@@ -23,7 +21,7 @@ public class Monster extends Enemy {
 
 
     public Action determineAction(Player player) {
-        if (this.position.range(player.getPosition()) <= VISION_RANGE) {
+        if (this.position.range(player.getPosition()) <= visionRange) {
             int dx = this.position.x - player.getPosition().x;
             int dy = this.position.y - player.getPosition().y;
             if (Math.abs(dx) > Math.abs(dy)) {
@@ -42,5 +40,10 @@ public class Monster extends Enemy {
             List<Action> actions = actionMap.values().stream().toList();
             return actions.get(random.nextInt(actions.size() - 1));
         }
+    }
+
+    @Override
+    public String describe() {
+        return super.describe() + String.format("");
     }
 }

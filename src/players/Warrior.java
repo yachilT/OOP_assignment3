@@ -1,6 +1,7 @@
 package players;
 
 import IO.InputReader;
+import IO.Message;
 import enemies.Enemy;
 import movment.Action;
 
@@ -37,12 +38,12 @@ public class Warrior extends Player{
         if (remainingCooldown == 0)
             castSpecialAbility();
         else
-            messageCallback.send(name + " tried to cast " + SPECIAL_ABILITY_NAME + ", but there is a cooldown:" + remainingCooldown);
+            messageCallback.send(new Message(name + " tried to cast " + SPECIAL_ABILITY_NAME + ", but there is a cooldown:" + remainingCooldown));
     }
     @Override
     protected void castSpecialAbility() {
         int toHeal = 10 * defensePts;
-        messageCallback.send(this.name + " casts " + SPECIAL_ABILITY_NAME + ", healing for " + toHeal);
+        messageCallback.send(new Message(this.name + " casts " + SPECIAL_ABILITY_NAME + ", healing for " + toHeal));
         remainingCooldown = ABILITY_COOLDOWN;
         health.heal(toHeal);
         List<Enemy> enemies = enemiesGetter.getInRange(this.position, ABILITY_RANGE);

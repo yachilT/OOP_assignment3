@@ -1,5 +1,6 @@
 import IO.CLI;
 import IO.InputReader;
+import IO.Message;
 import IO.MessageCallback;
 import enemies.Enemy;
 import gameBoard.Level;
@@ -46,7 +47,7 @@ public class GameController {
         try {
             List<Path> files = Files.list(Paths.get(levelDir)).toList();
             if (files.size() == 0){
-                cli.getMessageCallback().send(levelDir + " is empty");
+                cli.getMessageCallback().send(new Message(levelDir + " is empty"));
             }
             else {
                 Iterator<Path> levelsPaths = files.iterator();
@@ -58,13 +59,13 @@ public class GameController {
                 }
 
                 if (isOver)
-                    cli.getMessageCallback().send("Game over :(");
+                    cli.getMessageCallback().send(new Message("Game over :("));
                 else
-                    cli.getMessageCallback().send("You've won!");
+                    cli.getMessageCallback().send(new Message("You've won!"));
             }
         }
         catch (IOException e) {
-            cli.getMessageCallback().send(e.getMessage() + "\n" + e.getStackTrace());
+            cli.getMessageCallback().send(new Message(e.getMessage() + "\n" + e.getStackTrace()));
 
         }
     }
@@ -73,7 +74,7 @@ public class GameController {
         List<Player> players = factory.listPlayers();
         int i = 1;
         for (Player p: players) {
-            cli.getMessageCallback().send(i + ". " + p.describe());
+            cli.getMessageCallback().send(new Message(i + ". " + p.describe()));
             i++;
         }
         String input = cli.getInputReader().read();
@@ -89,7 +90,7 @@ public class GameController {
     }
 
     public void displayBoard(String board) {
-        cli.getMessageCallback().send(board);
+        cli.getMessageCallback().send(new Message(board));
     }
 
 

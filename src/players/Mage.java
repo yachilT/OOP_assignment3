@@ -1,5 +1,6 @@
 package players;
 
+import IO.Message;
 import enemies.Enemy;
 import movment.Action;
 import resources.*;
@@ -39,15 +40,15 @@ public class Mage extends Player{
         if(mana.getCurrentMana() >= manaCost)
             castSpecialAbility();
         else
-            messageCallback.send(name + " tried to cast " + SPECIAL_ABILITY_NAME + ", but there was not enough mana: " + mana.getCurrentMana() + "/" + manaCost  );
+            messageCallback.send(new Message(name + " tried to cast " + SPECIAL_ABILITY_NAME + ", but there was not enough mana: " + mana.getCurrentMana() + "/" + manaCost));
     }
     protected   void castSpecialAbility(){
-        messageCallback.send(name + " cast " + SPECIAL_ABILITY_NAME);
+        messageCallback.send(new Message(name + " cast " + SPECIAL_ABILITY_NAME));
         mana.decreaseCurrentMana(manaCost);
         int hits = 0;
         List<Enemy> enemiesInRange = enemiesGetter.getInRange(this.position, abilityRange);
         while(hits < hitCount && !enemiesInRange.isEmpty()){
-            enemiesInRange.get(random.nextInt(enemiesInRange.size() - 1)).dealDamage(attackPts, this);
+            enemiesInRange.get(random.nextInt(enemiesInRange.size())).dealDamage(attackPts, this);
             hits++;
             enemiesInRange = enemiesGetter.getInRange(this.position, abilityRange);
         }

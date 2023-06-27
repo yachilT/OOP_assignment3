@@ -1,12 +1,15 @@
 package tiles;
 
 import IO.DeathCallback;
+import IO.DecoratedMessage;
+import IO.Message;
 import enemies.Enemy;
 import gameBoard.*;
 import IO.MessageCallback;
 import movment.Action;
 import movment.Position;
 import movment.SpecialAbility;
+import players.Mage;
 import players.Player;
 import resources.Health;
 
@@ -62,32 +65,36 @@ public abstract class Unit extends Tile {
     public abstract void moveTo(Player player);
     private int attack() {
         int pts = random.nextInt(0, attackPts);
-        this.messageCallback.send(this.name + " rolled " + pts + " attack pts.");
+        this.messageCallback.send(new Message(this.name + " rolled " + pts + " attack pts."));
         return pts;
     }
     public int defend() {
         int pts = random.nextInt(0, defensePts);
-        this.messageCallback.send(this.name + " rolled " + pts + " defend pts.");
+        this.messageCallback.send(new Message(this.name + " rolled " + pts + " defend pts."));
         return pts;
 
     }
 
     public void dealDamage(double damage, Unit attacker){
+        this.messageCallback.send(new Message(String.format("%s dealt %.2f pts to %s", attacker.name, damage, this.name)));
         if (this.health.decreaseHealth(damage) == 0) {
-            messageCallback.send(String.format("%s dealt %.2f pts to %s", attacker.name, damage, this.name));
             onDeath();
         }
     }
     public void onDeath(){
-        messageCallback.send(this.name + " has died");
+        messageCallback.send(new Message(this.name + " has died"));
         deathCallback.onDeath();
     }
     public void combat(Unit defender){
+        messageCallback.send(new Message(this.name + " engaged in combat with " + defender.name));
+        messageCallback.send(new DecoratedMessage(this.describe() + "\nVS\n" + defender.describe()));
         double damage = this.attack() - defender.defend();
         if(damage > 0) {
             defender.dealDamage(damage, this);
         }
     }
+
+
 
 
 

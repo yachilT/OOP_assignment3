@@ -1,6 +1,7 @@
 package players;
 import IO.DeathCallback;
 import IO.InputReader;
+import IO.Message;
 import IO.MessageCallback;
 import gameBoard.EnemiesGetter;
 import movment.*;
@@ -43,7 +44,7 @@ public abstract class Player extends Unit {
         int healthPool =  10 * level;
         int attackToIncrease = 4 * level;
         int defenseToIncrease = level;
-        messageCallback.send(String.format("%s reached level %d: +%d Health, +%d Attack, +%d Defense", name, level, healthPool, attackToIncrease, defenseToIncrease));
+        messageCallback.send(new Message(String.format("%s reached level %d: +%d Health, +%d Attack, +%d Defense", name, level, healthPool, attackToIncrease, defenseToIncrease)));
         experiencePts = xpPts;
         health.increaseHealthPool(healthPool);
         health.regenerate();
@@ -63,12 +64,11 @@ public abstract class Player extends Unit {
 
 
     public void receiveXP(int XP){
-        messageCallback.send(this.name + " gained " + XP + "experience");
+        messageCallback.send(new Message(this.name + " gained " + XP + " experience"));
         experiencePts += XP;
         if (experiencePts >= MAX_EXPERIENCE * level)
             uponLevelingUp();
     }
-
 
 
     public Action determineAction() {

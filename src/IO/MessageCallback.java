@@ -1,5 +1,5 @@
 package IO;
 
 public interface MessageCallback {
-    public void send(String msg);
+    public void send(Message msg);
 }

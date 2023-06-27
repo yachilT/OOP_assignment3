@@ -1,12 +1,17 @@
 package IO;
 
 public class Message {
-    private String value;
+    protected String value;
     public Message(String value){
         this.value = value;
     }
 
-    public String getValue() {
+    public Message(){
+        value = "";
+    }
+
+    @Override
+    public String toString() {
         return value;
     }
 }

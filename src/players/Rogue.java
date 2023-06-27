@@ -1,5 +1,6 @@
 package players;
 
+import IO.Message;
 import enemies.Enemy;
 import movment.Action;
 
@@ -36,13 +37,13 @@ public class Rogue extends Player{
         if (currentEnergy >= cost)
             castSpecialAbility();
         else
-            messageCallback.send("Failed to cast " + SPECIAL_ABILITY_NAME + " " + name + " needs additional " + (cost - currentEnergy) + " enrgy points.");
+            messageCallback.send(new Message("Failed to cast " + SPECIAL_ABILITY_NAME + " " + name + " needs additional " + (cost - currentEnergy) + " enrgy points."));
 
     }
 
     @Override
     protected void castSpecialAbility() {
-        messageCallback.send(this.name + " casts " + SPECIAL_ABILITY_NAME);
+        messageCallback.send(new Message(this.name + " casts " + SPECIAL_ABILITY_NAME));
         List<Enemy> enemies = enemiesGetter.getInRange(this.position, ABILITY_RANGE);
         for (Enemy e : enemies) {
             int defense = e.defend();

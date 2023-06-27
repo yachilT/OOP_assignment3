@@ -7,9 +7,12 @@ import tiles.Unit;
 public abstract class Enemy extends Unit {
 
     protected int xpValue;
-    public Enemy(char character, String name, int health, int attackPts, int defencePts, int xpValue){
+
+    protected double visionRange;
+    public Enemy(char character, String name, int health, int attackPts, int defencePts, int xpValue, double visionRange){
         super(character,name,health,attackPts,defencePts);
         this.xpValue = xpValue;
+        this.visionRange = visionRange;
     }
 
     public int getXpValue(){
@@ -22,6 +25,7 @@ public abstract class Enemy extends Unit {
         this.combat(player);
     }
 
+
     public abstract Action determineAction(Player player);
 
 
@@ -33,5 +37,10 @@ public abstract class Enemy extends Unit {
     @Override
     public void castSpecialAbility() {
         // does nothing for now
+    }
+
+    @Override
+    public String describe() {
+        return super.describe() + String.format("\t\tXP: %d\t\tvision range: %.2f" , this.xpValue, this.visionRange);
     }
 }
