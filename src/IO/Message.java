@@ -1,5 +1,7 @@
 package IO;
 
+import java.util.Objects;
+
 public class Message {
     protected String value;
     public Message(String value){
