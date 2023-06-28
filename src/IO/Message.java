@@ -13,6 +13,12 @@ public class Message {
     }
 
     @Override
+    public boolean equals(Object object){
+        if(!(object instanceof Message))
+            return false;
+        return Objects.equals(((Message) object).value, value);
+    }
+    @Override
     public String toString() {
         return value;
     }

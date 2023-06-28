@@ -13,9 +13,7 @@ import tiles.Wall;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +74,7 @@ public class LevelFactory {
         }
         return tiles;
     }
-    private Map<String, Action> initActions(Level level){
+    public Map<String, Action> initActions(Level level){
         TileGetter tileGetter = level::get;
         return Map.of(
                 "w", new UpStep(tileGetter),
