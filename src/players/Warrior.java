@@ -47,8 +47,10 @@ public class Warrior extends Player{
         remainingCooldown = ABILITY_COOLDOWN;
         health.heal(toHeal);
         List<Enemy> enemies = enemiesGetter.getInRange(this.position, ABILITY_RANGE);
-        Enemy enemyToHit = enemies.get(rand.nextInt(enemies.size()));
-        enemyToHit.dealDamage(this.health.getHealthAmount() * 0.1, this);
+        if (enemies.size() > 0) {
+            Enemy enemyToHit = enemies.get(rand.nextInt(enemies.size()));
+            enemyToHit.dealDamage(this.health.getHealthAmount() * 0.1, this);
+        }
     }
     @Override
     public String describe(){

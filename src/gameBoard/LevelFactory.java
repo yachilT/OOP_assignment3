@@ -49,7 +49,7 @@ public class LevelFactory {
                             () -> {
                                 player.receiveXP(enemy.getXpValue());
                                 level.remove(enemy);
-                                player.moveTo(enemy);
+                                player.moveTo(level.get(enemy.getPosition()));
                             }
                     );
                     enemies.add(enemy);

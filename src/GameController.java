@@ -65,7 +65,7 @@ public class GameController {
             }
         }
         catch (IOException e) {
-            cli.getMessageCallback().send(new Message(e.getMessage() + "\n" + e.getStackTrace()));
+            cli.getMessageCallback().send(new Message(e.getMessage() + "\n" + Arrays.toString(e.getStackTrace())));
 
         }
     }
